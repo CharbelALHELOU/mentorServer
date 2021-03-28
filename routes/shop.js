@@ -299,5 +299,21 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
+router.get("/current", verifyToken, (req, res) => {
+  User.findById(req.userId)
+    .then((user) =>
+      Order.find()
+        .where("user.userId")
+        .equals(req.userId)
+        .sort({ updatedAt: -1 })
+        .then((orders) => res.json({ success: true, user, orders }))
+    )
+    .catch((err) =>
+      res
+        .status(404)
+        .json({ success: false, message: "Could not fetch user data" })
+    );
+});
+
 
 module.exports = router;
