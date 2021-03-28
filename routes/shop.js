@@ -300,8 +300,8 @@ router.delete("/:id", verifyToken, async (req, res) => {
 });
 
 router.get("/current", (req, res) => {
-  console.log(req);
-  User.findById(req.userId)
+  console.log(req.query.userId);
+  User.findById(req.query.userId)
     .then((user) =>
       Order.find()
         .where("user.userId")
