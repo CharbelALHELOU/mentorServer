@@ -1,5 +1,5 @@
-exports.checkCreditCard = (function(credit) {
-  return function(ccNum) {
+exports.checkCreditCard = (function (credit) {
+  return function (ccNum) {
     var len = ccNum.length,
       bit = 1,
       sum = 0,
@@ -12,7 +12,7 @@ exports.checkCreditCard = (function(credit) {
   };
 })([0, 2, 4, 6, 8, 1, 3, 5, 7, 9]);
 
-exports.checkShipDate = ship => {
+exports.checkShipDate = (ship) => {
   let shipDate = new Date(ship).getTime(),
     orderDate = new Date(Date.now()).getTime();
   if (
@@ -23,8 +23,8 @@ exports.checkShipDate = ship => {
   else return false;
 };
 
-exports.calcOrderTotal = function(products, productTotal) {
-  return products.reduce(function(a, b) {
-    return a + b[productTotal];
+exports.calcOrderTotal = function (mentors, mentorTotal) {
+  return mentors.reduce(function (a, b) {
+    return a + b[mentorTotal];
   }, 0);
 };

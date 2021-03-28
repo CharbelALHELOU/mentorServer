@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const categorySchema = new Schema({
   cat_name: { type: String },
-  products: [{ type: Schema.Types.ObjectId, ref: "Product" }]
+  mentors: [{ type: Schema.Types.ObjectId, ref: "Mentor" }],
 });
 
 module.exports = Category = mongoose.model("Category", categorySchema);

@@ -1,7 +1,7 @@
 const Validator = require("validator");
 const isEmpty = require("./is-empty");
 
-module.exports = function validateProductInput(data) {
+module.exports = function validateMentorInput(data) {
   let errors = {};
 
   data.prod_name = !isEmpty(data.prod_name) ? data.prod_name : "";
@@ -9,7 +9,7 @@ module.exports = function validateProductInput(data) {
   data.category = !isEmpty(data.category) ? data.category : "";
 
   if (!Validator.isLength(data.prod_name, { min: 2, max: 30 })) {
-    errors.prod_name = "Product name must be between 2 and 30 characters";
+    errors.prod_name = "Mentor name must be between 2 and 30 characters";
   }
 
   if (!Validator.isLength(data.category, { min: 2, max: 30 })) {
@@ -21,7 +21,7 @@ module.exports = function validateProductInput(data) {
   }
 
   if (Validator.isEmpty(data.prod_name)) {
-    errors.prod_name = "Product name field is required";
+    errors.prod_name = "Mentor name field is required";
   }
 
   if (Validator.isEmpty(data.category)) {
@@ -34,6 +34,6 @@ module.exports = function validateProductInput(data) {
 
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };
