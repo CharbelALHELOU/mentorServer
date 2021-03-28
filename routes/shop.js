@@ -299,7 +299,8 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
-router.get("/current", verifyToken, (req, res) => {
+router.get("/current", (req, res) => {
+  console.log(req);
   User.findById(req.userId)
     .then((user) =>
       Order.find()
