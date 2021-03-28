@@ -6,7 +6,8 @@ const userSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
-  resumeUrl : {type: String},
+  resumeUrl: { type: String },
+  foundMentors : { type: Number, required: true, default: -1 },
   mentors: [
     {
       mentor: { type: Schema.Types.ObjectId, ref: "Mentor" },
