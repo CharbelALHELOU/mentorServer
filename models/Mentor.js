@@ -6,7 +6,7 @@ const mentorSchema = new Schema(
     name: { type: String, required: true },
     university: { type: String, required: true },
     linkedinUrl: { type: String },
-    imagenUrl: { type: String },
+    imageUrl: { type: String },
     category: { type: Schema.Types.ObjectId, ref: "Category" },
   },
   { timestamps: true }

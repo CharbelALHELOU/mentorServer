@@ -6,15 +6,15 @@ const jwt = require("jsonwebtoken");
 
 const secretOrKey = require("../config/keys").secretOrKey;
 
-const User = require("../models/User"); // User model
+//const User = require("../models/User"); // User model
 const Mentor = require("../models/Mentor"); // Mentor model
 const Category = require("../models/Category"); // Category model
 const Order = require("../models/Order"); // Order model
 
 const validateCategoryInput = require("../validation/category"); // category validation
 const validateMentorInput = require("../validation/mentor"); // mentor validation
-const validateOrderInput = require("../validation/order"); // mentor validation
-
+/*const validateOrderInput = require("../validation/order"); // mentor validation
+ */
 // Multer configuration
 const MIME_TYPE_MAP = {
   "image/png": "png",
@@ -187,8 +187,9 @@ router.post(
       })
       .then((category) => {
         const newMentor = new Mentor({
-          prod_name: req.body.prod_name,
-          price: req.body.price,
+          name: req.body.name,
+          university: req.body.university,
+          linkedinUrl: req.body.linkedinUrl,
           imageUrl: url + "/images/" + req.file.filename,
           category: category._id,
         });
@@ -221,8 +222,9 @@ router.put(
     // Constructing a url to the server
     const url = req.protocol + "://" + req.get("host");
     const imageFile = req.file;
-    const newMentorName = req.body.prod_name;
-    const newPrice = req.body.price;
+    const newMentorName = req.body.name;
+    const newUniversity = req.body.university;
+    const newLinkedinUrl = req.body.linkedinUrl;
     const newCategoryName = req.body.category;
     try {
       const oldMentor = await Mentor.findById(req.params.id);
@@ -238,7 +240,7 @@ router.put(
         const updatedOldCategory = await oldCategory.save();
         oldMentor.category = newCategory._id;
       }
-      oldImageName = oldMentor.prod_name;
+      oldImageName = oldMentor.name;
       let oldPath = oldMentor.imageUrl.split(url).pop();
       if (imageFile) {
         fs.unlink("." + oldPath, (err) => {
@@ -249,8 +251,13 @@ router.put(
         });
         oldMentor.imageUrl = url + "/images/" + imageFile.filename;
       }
-      oldMentor.prod_name = newMentorName ? newMentorName : oldMentor.prod_name;
-      oldMentor.price = newPrice ? newPrice : oldMentor.price;
+      oldMentor.name = newMentorName ? newMentorName : oldMentor.name;
+      oldMentor.university = newUniversity
+        ? newUniversity
+        : oldMentor.university;
+      oldMentor.linkedinUrl = newLinkedinUrl
+        ? newLinkedinUrl
+        : oldMentor.linkedinUrl;
       const updatedMentor = await oldMentor.save();
       res.json({ success: true, mentor: updatedMentor });
     } catch (err) {
@@ -269,7 +276,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
     const mentor = await Mentor.findById(req.params.id);
     const category = await Category.findById(mentor.category);
     const removeIndex = category.mentors.indexOf(req.params.id);
-    let prod_name = mentor.prod_name;
+    let name = mentor.name;
     // deleting image file
     if (mentor) {
       let url = req.protocol + "://" + req.get("host");
@@ -284,14 +291,14 @@ router.delete("/:id", verifyToken, async (req, res) => {
     category.mentors.splice(removeIndex, 1);
     const updatedCategory = await category.save();
     const removeMentor = await mentor.remove();
-    res.json({ success: true, message: prod_name + " was deleted" });
+    res.json({ success: true, message: name + " was deleted" });
   } catch {
     res
       .status(404)
       .json({ success: false, message: "Failed to delete mentor" });
   }
 });
-
+/*
 // @route   PUT /shop/cart/:userId/:mentorId
 // @desc    Add mentor to cart
 // @access  Private
@@ -540,6 +547,6 @@ router.get("/current", verifyToken, (req, res) => {
         .status(404)
         .json({ success: false, message: "Could not fetch user data" })
     );
-});
+});*/
 
 module.exports = router;
