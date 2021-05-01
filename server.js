@@ -13,7 +13,7 @@ const shopRoutes = require("./routes/shop");
 const app = express();
 
 var corsOptions = {
-  origin: 'https://mentorpack-beta.web.app/',
+  origin: 'https://mentorpack-beta.web.app/login',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
