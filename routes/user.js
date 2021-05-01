@@ -147,6 +147,7 @@ router.post("/login", (req, res) => {
 router.get("/all", verifyToken, (req, res) => {
   const role = 0;
   User.find({ role })
+    .select('+password')
     .sort({ updatedAt: -1 })
     .then((users) => res.json({ success: true, users }))
     .catch((err) =>
