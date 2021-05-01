@@ -13,6 +13,9 @@ const shopRoutes = require("./routes/shop");
 const app = express();
 
 
+// use it before all route definitions
+app.use(cors({origin: 'https://mentorpack-beta.web.app/'}));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/images", express.static(path.join(__dirname, "images")));
