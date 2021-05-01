@@ -111,13 +111,11 @@ router.post("/login", (req, res) => {
   // if (!isValid) return res.status(400).json({ success: false, message: errors });
   const email = req.body.email;
   const password = req.body.password;
-  console.log("here =======================================> 1 <");
   User.findOne({ email }).then((user) => {
     if (!user) {
       errors.email = "User not found";
       return res.status(400).json({ success: false, message: errors.email });
     }
-    console.log("here =======================================> 2 <");
     bcrypt.compare(password, user.password).then((isMatch) => {
       if (isMatch) {
         // Create JWT payload
