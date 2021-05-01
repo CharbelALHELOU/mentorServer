@@ -9,6 +9,29 @@ const User = require("../models/User"); // User model
 const validateRegisterInput = require("../validation/register"); // register validation
 const validateLoginInput = require("../validation/login"); // login validation
 
+function verifyToken(req, res, next) {
+  if (!req.headers.authorization)
+    return res.status(401).send("Unauthorized request");
+  let token = req.headers.authorization.split(" ")[1];
+  if (token === "null") return res.status(401).send("Unauthorized request");
+  let payload = jwt.verify(token, secretOrKey);
+  if (!payload) return res.status(401).send("Unauthorized request");
+  req.userId = payload.id;
+  const id= req.userId;
+  User.findOne({ id }).then((user) => {
+    if (!user) {
+      errors.email = "User not found";
+      return res.status(400).json({ success: false, message: errors.email });
+    }
+    if (user.role != 0){
+      return res.status(401).send("Unauthorized request");
+    }
+  });
+  next();
+}
+
+
+
 // Multer configuration
 const MIME_TYPE_MAP = {
   "image/png": "png",
@@ -119,6 +142,17 @@ router.post("/login", (req, res) => {
     });
   });
 });
+
+router.get("/all", verifyToken, (req, res) => {
+  const role = 0;
+  User.find({ role })
+    .sort({ updatedAt: -1 })
+    .then((users) => res.json({ success: true, users }))
+    .catch((err) =>
+      res.status(404).json({ success: false, message: "No mentors found" })
+    );
+});
+
 
 
 

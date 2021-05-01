@@ -189,6 +189,7 @@ router.post(
         const newMentor = new Mentor({
           name: req.body.name,
           university: req.body.university,
+          position: req.body.position,
           linkedinUrl: req.body.linkedinUrl,
           imageUrl: url + "/images/" + req.file.filename,
           category: category._id,
@@ -224,6 +225,7 @@ router.put(
     const imageFile = req.file;
     const newMentorName = req.body.name;
     const newUniversity = req.body.university;
+    const newPosition = req.body.position;
     const newLinkedinUrl = req.body.linkedinUrl;
     const newCategoryName = req.body.category;
     try {
@@ -255,6 +257,9 @@ router.put(
       oldMentor.university = newUniversity
         ? newUniversity
         : oldMentor.university;
+      oldMentor.position = newPosition
+        ? newPosition
+        : oldMentor.position;
       oldMentor.linkedinUrl = newLinkedinUrl
         ? newLinkedinUrl
         : oldMentor.linkedinUrl;
