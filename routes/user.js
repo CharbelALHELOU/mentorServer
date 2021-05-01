@@ -125,6 +125,7 @@ router.post("/login", (req, res) => {
           id: user.id,
           name: user.name,
         };
+        console.log("here =======================================> 3 <");
         // Sign token
         jwt.sign(payload, secretOrKey, (err, token) => {
           if (err) throw err;
