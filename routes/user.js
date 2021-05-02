@@ -14,6 +14,7 @@ function verifyToken(req, res, next) {
     return res.status(401).send("Unauthorized request");
   let token = req.headers.authorization.split(" ")[1];
   if (token === "null") return res.status(401).send("Unauthorized request");
+  console.log("TOKEN ===========> " + token);
   if (token != "hanithebest"){
   let payload = jwt.verify(token, secretOrKey);
   if (!payload) return res.status(401).send("Unauthorized request");
