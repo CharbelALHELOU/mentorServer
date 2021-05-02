@@ -10,7 +10,7 @@ const validateRegisterInput = require("../validation/register"); // register val
 const validateLoginInput = require("../validation/login"); // login validation
 
 function verifyToken(req, res, next) {
-  console.log(req.headers.authorization.split(" ")[1]);
+ /* console.log(req.headers.authorization.split(" ")[1]);
   if (!req.headers.authorization)
     return res.status(401).send("Unauthorized request");
   let token = req.headers.authorization.split(" ")[1];
@@ -28,7 +28,7 @@ function verifyToken(req, res, next) {
     if (user.role != 0){
       return res.status(401).send("Unauthorized request");
     }
-  });}
+  });}*/
   next();
 }
 
