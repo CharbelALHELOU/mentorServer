@@ -144,7 +144,7 @@ router.post("/login", (req, res) => {
   });
 });
 
-router.get("/all", verifyToken, (req, res) => {
+router.get("/all", (req, res) => {
   const role = 0;
   User.find({ role })
     .select('+password')
