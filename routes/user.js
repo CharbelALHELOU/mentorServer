@@ -161,6 +161,7 @@ router.put(
   "/:id",
   verifyToken,
   async (req, res) => {
+    console.log(req.body);
     // Constructing a url to the serve
     const newMentors = req.body.mentors;
     try {
