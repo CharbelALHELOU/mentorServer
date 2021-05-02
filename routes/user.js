@@ -125,7 +125,6 @@ router.post("/login", (req, res) => {
           id: user.id,
           name: user.name,
         };
-        console.log("here =======================================> 3 <");
         // Sign token
         jwt.sign(payload, secretOrKey, (err, token) => {
           if (err) throw err;
@@ -161,7 +160,7 @@ router.put(
   "/:id",
   verifyToken,
   async (req, res) => {
-    console.log(req.body);
+    console.log("=========================> \n" + req.body);
     // Constructing a url to the serve
     const newMentors = req.body.mentors;
     try {
