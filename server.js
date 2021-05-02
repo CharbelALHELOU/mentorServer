@@ -21,6 +21,8 @@ app.use("/resume", express.static(path.join(__dirname, "resume")));
 app.use("/user", userRoutes);
 app.use("/shop", shopRoutes);
 
+
+
 mongoose
   .connect(mongooseURI)
   .then(() => {

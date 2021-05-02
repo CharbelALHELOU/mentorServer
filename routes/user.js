@@ -63,6 +63,10 @@ const storage = multer.diskStorage({
 });
 //----------------------------------Routes----------------------------------//
 
+router.post("/", (req, res) => {
+  res.json({message : "hello world"})
+})
+
 // @route   POST /user/register
 // @desc    Register user
 // @access  Public
