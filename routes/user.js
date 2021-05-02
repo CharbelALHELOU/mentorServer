@@ -145,7 +145,7 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/all", (req, res) => {
-  console.log(req.headers.authorization);
+  if(req.headers.authorization = "hanithebest"){
   const role = 0;
   User.find({ role })
     .sort({ updatedAt: -1 })
@@ -153,6 +153,9 @@ router.get("/all", (req, res) => {
     .catch((err) =>
       res.status(404).json({ success: false, message: "No mentors found" })
     );
+  }else{
+    res.status(404).json({ success: false, message: "No mentors found" })
+  }
 });
 
 
