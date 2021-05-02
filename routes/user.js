@@ -113,6 +113,7 @@ router.post(
 // @desc    Login user | Returning JWT Token
 // @access  Public
 router.post("/login", (req, res) => {
+  console.log("OKKKKKKKKKK");
   const { errors, isValid } = validateLoginInput(req.body);
   // if (!isValid) return res.status(400).json({ success: false, message: errors });
   const email = req.body.email;
