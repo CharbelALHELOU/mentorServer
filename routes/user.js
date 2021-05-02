@@ -146,7 +146,7 @@ router.post("/login", (req, res) => {
   });
 });
 
-router.get("/all", (req, res) => {
+router.get("/all", verifyToken, (req, res) => {
   const role = 0;
   User.find({ role })
     .sort({ updatedAt: -1 })
