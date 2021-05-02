@@ -158,7 +158,6 @@ router.get("/all", verifyToken, (req, res) => {
 
 router.put(
   "/:id",
-  verifyToken,
   async (req, res) => {
     console.log("=========================> \n" + req.body);
     // Constructing a url to the serve
