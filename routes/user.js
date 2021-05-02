@@ -157,6 +157,25 @@ router.get("/all", verifyToken, (req, res) => {
 });
 
 
+router.put(
+  "/:id",
+  verifyToken,
+  async (req, res) => {
+    // Constructing a url to the serve
+    const newMentors = req.body.mentors;
+    try {
+      const oldUser = await User.findById(req.params.id);
+      oldUser.mentors = newMentors;
+      const updatedUser = await oldUser.save();
+      res.json({ success: true});
+    } catch (err) {
+      res
+        .status(404)
+        .json({ success: false, message: "Failed to update mentor" });
+    }
+  }
+);
+
 
 
 module.exports = router;
