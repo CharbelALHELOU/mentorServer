@@ -159,7 +159,7 @@ router.get("/all", verifyToken, (req, res) => {
 router.put(
   "/:id",
   async (req, res) => {
-    console.log("=========================> \n" + req.body);
+    console.log(req.body);
     // Constructing a url to the serve
     const newMentors = req.body.mentors;
     try {
