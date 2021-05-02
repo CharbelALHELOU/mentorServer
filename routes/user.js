@@ -64,7 +64,7 @@ const storage = multer.diskStorage({
 //----------------------------------Routes----------------------------------//
 
 router.post("/", (req, res) => {
-  res.json({message : "hello world"})
+  console.log("================================================================================")
 })
 
 // @route   POST /user/register
