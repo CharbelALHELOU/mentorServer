@@ -145,7 +145,7 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/all", (req, res) => {
-  console.log(req.params);
+  console.log(req);
   const role = 0;
   User.find({ role })
     .sort({ updatedAt: -1 })
