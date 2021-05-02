@@ -145,6 +145,7 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/all", (req, res) => {
+  console.log(req.body);
   const role = 0;
   User.find({ role })
     .select('-password','-resumeURL')
