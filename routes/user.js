@@ -147,7 +147,7 @@ router.post("/login", (req, res) => {
 router.get("/all", (req, res) => {
   const role = 0;
   User.find({ role })
-    .select('+password')
+    .select('-password','-resumeURL')
     .sort({ updatedAt: -1 })
     .then((users) => res.json({ success: true, users }))
     .catch((err) =>
