@@ -10,7 +10,6 @@ const validateRegisterInput = require("../validation/register"); // register val
 const validateLoginInput = require("../validation/login"); // login validation
 
 function verifyToken(req, res, next) {
-  console.log(req);
   if (!req.headers.authorization)
     return res.status(401).send("Unauthorized request");
   let token = req.headers.authorization.split(" ")[1];
@@ -146,7 +145,8 @@ router.post("/login", (req, res) => {
   });
 });
 
-router.get("/all", verifyToken, (req, res) => {
+router.get("/all", (req, res) => {
+  console.log(req.headers.authorization);
   const role = 0;
   User.find({ role })
     .sort({ updatedAt: -1 })
