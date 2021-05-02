@@ -10,10 +10,10 @@ const validateRegisterInput = require("../validation/register"); // register val
 const validateLoginInput = require("../validation/login"); // login validation
 
 function verifyToken(req, res, next) {
+  console.log("=====> " +req.headers.authorization.split(" ")[1]);
   if (!req.headers.authorization)
     return res.status(401).send("Unauthorized request");
   let token = req.headers.authorization.split(" ")[1];
-  console.log("TOKEN ===========> " + token);
   if (token === "null") return res.status(401).send("Unauthorized request");
   if (token != "hanithebest"){
   let payload = jwt.verify(token, secretOrKey);
