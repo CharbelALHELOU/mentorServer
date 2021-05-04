@@ -146,7 +146,8 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/all", verifyToken, (req, res) => {
-
+  User.find({role}).then((users) => {
+  })
 });
 
 
