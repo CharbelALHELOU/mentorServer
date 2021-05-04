@@ -148,9 +148,6 @@ router.post("/login", (req, res) => {
 router.get("/all", verifyToken, (req, res) => {
   const role = 0;
   User.find({role}).then((users) => {
-    if (!user) {
-      return res.status(400).send("no users found");
-    }
     res.json({ users })
   })
 });
