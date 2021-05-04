@@ -27,6 +27,7 @@ function verifyToken(req, res, next) {
     if (user.role != 1){
       return res.status(401).send("Unauthorized request");
     }
+    console.log("user is a ====> " + user.role);
   });}
   next();
 }
