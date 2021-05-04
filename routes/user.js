@@ -146,11 +146,13 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/all", verifyToken, (req, res) => {
-  User.find()
-    .then((users) => res.json({ success: true, users }))
-    .catch((err) =>
-      res.status(404).send("no user found")
-    );
+  const role = 0;
+  User.find({role}).then((users) => {
+    if (!user) {
+      return res.status(400).send("no users found");
+    }
+    res.json({ users })
+  })
 });
 
 
