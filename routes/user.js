@@ -20,13 +20,9 @@ function verifyToken(req, res, next) {
   req.userId = payload.id;
   const id= req.userId;
   User.findOne({ id }).then((user) => {
-    if (!user) {
+    if (!user || user.role != 1) {
       return res.status(400).send("error");
     }
-    if (user.role != 1){
-      return res.status(401).send("Unauthorized request");
-    }
-    console.log("user is a ====> " + user.role);
   });}
   next();
 }
