@@ -150,9 +150,6 @@ router.get("/all", verifyToken, (req, res) => {
   User.find({ role })
     .sort({ updatedAt: -1 })
     .then((users) => res.json({ success: true, users }))
-    .catch((err) =>
-      res.status(404).json({ success: false, message: "No mentors found" })
-    );
 });
 
 
