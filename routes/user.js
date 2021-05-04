@@ -21,7 +21,7 @@ function verifyToken(req, res, next) {
   const id= req.userId;
   User.findOne({ id }).then((user) => {
     if (!user) {
-      return res.status(400).json({ success: false });
+      return res.status(400).send("error");
     }
     if (user.role != 1){
       return res.status(401).send("Unauthorized request");
