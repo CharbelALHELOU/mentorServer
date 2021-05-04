@@ -14,11 +14,9 @@ function verifyToken(req, res, next) {
     return res.status(401).send("Unauthorized request");
   let token = req.headers.authorization.split(" ")[1];
   if (token === "null") return res.status(401).send("Unauthorized request");
-  if (token != "hanithebest") {
-    let payload = jwt.verify(token, secretOrKey);
-    if (!payload) return res.status(401).send("Unauthorized request");
-    req.userId = payload.id;
-  }
+  let payload = jwt.verify(token, secretOrKey);
+  if (!payload) return res.status(401).send("Unauthorized request");
+  req.userId = payload.id;
   next();
 }
 
@@ -137,14 +135,14 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/all", verifyToken, (req, res) => {
-  const id= req.userId;
+  const id = req.userId;
   User.findOne({ id }).then((user) => {
     if (!user || user.role != 1) {
       return res.status(401).send("error");
-    }else{
+    } else {
       User.find().then((users) => {
         res.json({
-          users : users,
+          users: users,
         })
       })
     }
