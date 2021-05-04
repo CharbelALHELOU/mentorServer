@@ -149,7 +149,7 @@ router.get("/all", verifyToken, (req, res) => {
   User.find()
     .then((users) => res.json({ success: true, users }))
     .catch((err) =>
-      res.status(404).json({ success: false, message: "No mentors found" })
+      res.status(404).send("no user found")
     );
 });
 
