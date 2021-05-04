@@ -137,7 +137,8 @@ router.post("/login", (req, res) => {
 router.get("/all", verifyToken, (req, res) => {
   const id = req.userId;
   User.findOne({ id }).then((user) => {
-    if (!user || user.role != 1) {
+    console.log(user.email);
+    if (user.role != 1) {
       return res.status(401).send("error");
     } else {
       User.find().then((users) => {
