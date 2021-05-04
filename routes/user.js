@@ -10,7 +10,6 @@ const validateRegisterInput = require("../validation/register"); // register val
 const validateLoginInput = require("../validation/login"); // login validation
 
 function verifyToken(req, res, next) {
- /* console.log(req.headers.authorization.split(" ")[1]);
   if (!req.headers.authorization)
     return res.status(401).send("Unauthorized request");
   let token = req.headers.authorization.split(" ")[1];
@@ -28,7 +27,7 @@ function verifyToken(req, res, next) {
     if (user.role != 0){
       return res.status(401).send("Unauthorized request");
     }
-  });}*/
+  });}
   next();
 }
 
@@ -62,10 +61,6 @@ const storage = multer.diskStorage({
   },
 });
 //----------------------------------Routes----------------------------------//
-
-router.post("/", (req, res) => {
-  console.log("================================================================================")
-})
 
 // @route   POST /user/register
 // @desc    Register user
@@ -139,6 +134,8 @@ router.post("/login", (req, res) => {
             token: token,
             user: user,
           });
+        },{
+          expiresIn : '5s'
         });
       } else {
         errors.password = "Password is incorrect";

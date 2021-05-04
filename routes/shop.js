@@ -43,14 +43,14 @@ const storage = multer.diskStorage({
 
 //--------------------------------Middleware--------------------------------//
 
-function verifyToken(req, res, next) {/*
+function verifyToken(req, res, next) {
   if (!req.headers.authorization)
     return res.status(401).send("Unauthorized request");
   let token = req.headers.authorization.split(" ")[1];
   if (token === "null") return res.status(401).send("Unauthorized request");
   let payload = jwt.verify(token, secretOrKey);
   if (!payload) return res.status(401).send("Unauthorized request");
-  req.userId = payload.id;*/
+  req.userId = payload.id;
   next();
 }
 
@@ -170,7 +170,7 @@ router.post("/category", verifyToken, (req, res) => {
 // @desc    Create mentor
 // @access  Private
 router.post(
-  "/",
+  "/", verifyToken,
   multer({ storage: storage }).single("imageUrl"),
   (req, res) => {
     const { errors, isValid } = validateMentorInput(req.body);
