@@ -24,7 +24,7 @@ function verifyToken(req, res, next) {
       errors.email = "User not found";
       return res.status(400).json({ success: false, message: errors.email });
     }
-    if (user.role != 0){
+    if (user.role != 1){
       return res.status(401).send("Unauthorized request");
     }
   });}
