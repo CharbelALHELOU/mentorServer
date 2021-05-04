@@ -146,10 +146,11 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/all", verifyToken, (req, res) => {
-  const role = 0;
-  User.find({ role })
-    .sort({ updatedAt: -1 })
+  User.find()
     .then((users) => res.json({ success: true, users }))
+    .catch((err) =>
+      res.status(404).json({ success: false, message: "No mentors found" })
+    );
 });
 
 
