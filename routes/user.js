@@ -21,7 +21,7 @@ function verifyToken(req, res, next) {
   const id= req.userId;
   User.findOne({ id }).then((user) => {
     if (!user || user.role != 1) {
-      return res.status(400).send("error");
+      return res.status(401).send("error");
     }
   });}
   next();
