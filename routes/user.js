@@ -290,7 +290,7 @@ router.post('/upload', function (req, res) {
       //upload one file
       if (n.length == 0) {
         var fileMetadata = {
-          'name': file_name,
+          'name': file_name+Date.now().toString,
           parents: [targetFolderId]
         };
         var media = {
