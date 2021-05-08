@@ -26,8 +26,9 @@ formidable = require('formidable'),
   path = require('path');
 const readline = require('readline');
 const { google } = require('googleapis');
+const { gmail } = require("googleapis/build/src/apis/gmail");
 // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/drive'];///-----
+const SCOPES = ['https://www.googleapis.com/auth/drive','https://mail.google.com/'];///-----'https://www.googleapis.com/auth/drive',
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
@@ -221,6 +222,37 @@ router.get("/all", verifyToken, (req, res) => {
   })
 });
 
+var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
+
+var transporter = nodemailer.createTransport(smtpTransport({
+  service: 'gmail',
+  host: 'smtp.gmail.com',
+  auth: {
+    user: 'mentorpack.contact@gmail.com',
+    pass: 'CharbelHaniNourarethe3founders!'
+  }
+}));
+var handlebars = require('handlebars');
+
+var mailOptions = {
+  from: 'mentorpack.contact@gmail.com',
+  to: 'alheloucharbel@gmail.com',
+  subject: 'Sending Email using Node.js[nodemailer]',
+  text: "test test test"
+};
+
+var readHTMLFile = function(path, callback) {
+  fs.readFile(path, {encoding: 'utf-8'}, function (err, html) {
+      if (err) {
+          throw err;
+          callback(err);
+      }
+      else {
+          callback(null, html);
+      }
+  });
+};
 
 router.put(
   "/:id",
@@ -232,15 +264,96 @@ router.put(
       const oldUser = await User.findById(req.params.id);
       oldUser.mentors = newMentors;
       const updatedUser = await oldUser.save();
+  
+      readHTMLFile('routes/index.html', function(err, html) {
+        var template = handlebars.compile(html);
+        var replacements = {
+             username: "John Doe"
+        };
+        var htmlToSend = template(replacements);
+        var mailOptions = {
+          from: 'mentorpack.contact@gmail.com',
+          to: 'alheloucharbel@gmail.com',
+          subject: 'Sending Email using Node.js[nodemailer]',
+            html : htmlToSend
+         };
+         transporter.sendMail(mailOptions, function (error, response) {
+            if (error) {
+                console.log(error);
+                callback(error);
+            }
+        });
+    });
+
+
+
+
+
+
+/*
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      }); 
+
+*/
+
+
       res.json({ success: true });
     } catch (err) {
       res
         .status(404)
         .json({ success: false, message: "Failed to update mentor" });
     }
+
+    
   }
 );
+/*
 
+      fs.readFile('./routes/credentials.json', (err, content) => {
+        if (err) return console.log('Error loading client secret file:', err);
+        // Authorize a client with credentials, then call the Google Drive API.
+        authorize(JSON.parse(content), sendMessage);//------
+      });
+
+
+
+    function makeBody(to, from, subject, message) {
+      var str = ["Content-Type: text/plain; charset=\"UTF-8\"\n",
+        "MIME-Version: 1.0\n",
+        "Content-Transfer-Encoding: 7bit\n",
+        "to: ", to, "\n",
+        "from: ", from, "\n",
+        "subject: ", subject, "\n\n",
+        message
+      ].join('');
+
+      var encodedMail = new Buffer((str).toString("base64").replace(/\+/g, '-').replace(/\//g, '_'));
+      return encodedMail;
+    }
+
+    function sendMessage(auth) {
+      const gmail = google.gmail({ version: 'v1', auth });
+      var raw = makeBody('alheloucharbel@gmail.com', 'mentorpack.contact@gmail.com', 'Mentorpack test', "helloooooo");
+      gmail.users.messages.send({
+        auth: auth,
+        userId: 'me',
+        resource: {
+          raw: raw
+        }
+      }, function (err, response) {
+        console.log(err );
+      });
+    }
+
+
+
+
+*/
 
 
 
@@ -279,6 +392,7 @@ router.post('/upload', function (req, res) {
     const targetFolderId = "1LZkwgaHJqkD5J2A5rTz8B_bH9mX2QnjZ";
     function uploadFile(auth) {
       const drive = google.drive({ version: 'v3', auth });
+
       //upload one file
       var fileMetadata = {
         'name': file_name,
@@ -408,11 +522,6 @@ router.get('/:id', function (req, res) {
 
 
 });
-
-
-
-
-
 
 
 

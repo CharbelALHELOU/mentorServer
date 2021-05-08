@@ -87,7 +87,7 @@ router.get("/mentors", verifyToken, (req, res) => {
 // @route   GET /shop/mentors/:id
 // @desc    Get mentor by id
 // @access  Private
-router.get("/mentors/:id", (req, res) => {
+router.get("/mentors/:id", verifyToken, (req, res) => {
   Mentor.findById(req.params.id)
     .then((mentor) => res.json({ success: true, mentor }))
     .catch((err) =>
