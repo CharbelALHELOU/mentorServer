@@ -28,7 +28,7 @@ const readline = require('readline');
 const { google } = require('googleapis');
 const { gmail } = require("googleapis/build/src/apis/gmail");
 // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/drive','https://mail.google.com/'];///-----'https://www.googleapis.com/auth/drive',
+const SCOPES = ['https://www.googleapis.com/auth/drive'];///-----'https://www.googleapis.com/auth/drive',
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
@@ -45,12 +45,10 @@ const MIME_TYPE_MAP = {
 };
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-
-    console.log(req);
     const isValidFile = MIME_TYPE_MAP[file.mimetype];
     let error = new Error("Invalid mime type");
     if (isValidFile) error = null;
-    cb(error, "routes/resume");
+    cb(error, "./resume");
   },
   filename: (req, file, cb) => {
     const name = file.originalname
@@ -73,74 +71,39 @@ router.post(
   "/register",
   multer({ storage: storage }).single("resumeUrl"),
   (req, res) => {
-    console.log(req);
+    var FileId = "";
     const { errors, isValid } = validateRegisterInput(req.body);
-    if (!isValid)
+    if (!isValid){
       return res.status(400).json({ success: false, message: errors });
+    }
     const url = req.protocol + "://" + req.get("host");
     User.findOne({ email: req.body.email }).then((user) => {
       if (user) {
         errors.email = "Email already exists";
         return res.status(400).json({ success: false, message: errors.email });
       } else {
-        const newUser = new User({
-          name: req.body.name,
-          email: req.body.email,
-          password: req.body.password,
-          resumeUrl: url + "/routes/resume/" + req.file.filename,
-        });
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(newUser.password, salt, (err, hash) => {
-            if (err) throw err;
-            newUser.password = hash;
-            newUser
-              .save()
-              .then((user) => res.json({ success: true, user }))
-              .catch((err) =>
-                res.status(404).json({
-                  success: false,
-                  message: err,
-                })
-              );
-          });
-        });
 
         fs.readFile('./routes/credentials.json', (err, content) => {
           if (err) return console.log('Error loading client secret file:', err);
           // Authorize a client with credentials, then call the Google Drive API.
           authorize(JSON.parse(content), uploadFile);//------
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       }
     });
 
 
 
-    const targetFolderId = "1LZkwgaHJqkD5J2A5rTz8B_bH9mX2QnjZ";
+    const targetFolderId = "1dHuEXWVSnyc2ljhtyDGW9Tbm8IyJ0wh6";
     function uploadFile(auth) {
       const drive = google.drive({ version: 'v3', auth });
       //upload one file
       var fileMetadata = {
-        'name': Date.now().toString() + " - " + req.file.filename,
+        'name': req.file.filename,
         parents: [targetFolderId]
       };
       var media = {
         mimeType: req.file.mimetype,
-        body: fs.createReadStream(path.join(__dirname, 'resume/', req.file.filename))
+        body: fs.createReadStream(path.join('resume/', req.file.filename))
       };
       drive.files.create({
 
@@ -150,19 +113,38 @@ router.post(
       }, function (err, file) {
         if (err) {
           // Handle error
-          console.error(err);
+          res.status(400).json({
+            success: false,
+            message: err,
+          })
         } else {
           file_id = file.data.id;
-          console.log(`file Id:${file.data.id}`);
+          FileId = file.data.id;
+
+          const newUser = new User({
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password,
+            resumeUrl: url + "/user/" + file.data.id,
+          });
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+              if (err) throw err;
+              newUser.password = hash;
+              newUser
+                .save()
+                .then((user) => res.json({ success: true, user }))
+                .catch((err) =>
+                  res.status(404).json({
+                    success: false,
+                    message: err,
+                  })
+                );
+            });
+          });
         }
       });
     }
-
-
-
-
-
-
   }
 );
 
@@ -209,7 +191,6 @@ router.post("/login", (req, res) => {
 router.get("/all", verifyToken, (req, res) => {
   const id = req.userId;
   User.findOne({ _id: id }).then((user) => {
-    console.log(user.email);
     if (user.role != 1) {
       return res.status(401).send("error");
     } else {
@@ -234,6 +215,8 @@ var transporter = nodemailer.createTransport(smtpTransport({
   }
 }));
 var handlebars = require('handlebars');
+const { file } = require("googleapis/build/src/apis/file");
+const { testing } = require("googleapis/build/src/apis/testing");
 
 var mailOptions = {
   from: 'mentorpack.contact@gmail.com',
@@ -242,64 +225,63 @@ var mailOptions = {
   text: "test test test"
 };
 
-var readHTMLFile = function(path, callback) {
-  fs.readFile(path, {encoding: 'utf-8'}, function (err, html) {
-      if (err) {
-          throw err;
-          callback(err);
-      }
-      else {
-          callback(null, html);
-      }
+var readHTMLFile = function (path, callback) {
+  fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
+    if (err) {
+      throw err;
+      callback(err);
+    }
+    else {
+      callback(null, html);
+    }
   });
 };
 
 router.put(
   "/:id",
   async (req, res) => {
-    console.log(req.body);
     // Constructing a url to the serve
     const newMentors = req.body.mentors;
     try {
       const oldUser = await User.findById(req.params.id);
       oldUser.mentors = newMentors;
       const updatedUser = await oldUser.save();
-  
-      readHTMLFile('routes/index.html', function(err, html) {
+
+      readHTMLFile('routes/index.html', function (err, html) {
         var template = handlebars.compile(html);
         var replacements = {
-             username: "John Doe"
+          username: "John Doe"
         };
         var htmlToSend = template(replacements);
         var mailOptions = {
           from: 'mentorpack.contact@gmail.com',
           to: 'alheloucharbel@gmail.com',
           subject: 'Sending Email using Node.js[nodemailer]',
-            html : htmlToSend
-         };
-         transporter.sendMail(mailOptions, function (error, response) {
-            if (error) {
-                console.log(error);
-                callback(error);
-            }
+          html: htmlToSend
+        };
+        transporter.sendMail(mailOptions, function (error, response) {
+          if (error) {
+            console.log(error);
+            callback(error);
+          }
         });
-    });
+      });
 
 
 
 
 
 
-/*
-      transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email sent: ' + info.response);
-        }
-      }); 
-
-*/
+      /*
+            transporter.sendMail(mailOptions, function(error, info){
+              if (error) {
+                console.log(error);
+              } else {
+                console.log('Email sent: ' + info.response);
+              }
+            }); 
+      
+      */
 
 
       res.json({ success: true });
@@ -309,10 +291,10 @@ router.put(
         .json({ success: false, message: "Failed to update mentor" });
     }
 
-    
+
   }
 );
-/*
+/*4%2F0AY0e-g6LfuoBMP77DvISlMO65-FYWzS9zZvP-7VlGtmPJM_coqDVpGBadRDxPScu5KzE8g
 
       fs.readFile('./routes/credentials.json', (err, content) => {
         if (err) return console.log('Error loading client secret file:', err);
@@ -353,17 +335,16 @@ router.put(
 
 
 
-*/
+
 
 
 
 
 
 router.post('/upload', function (req, res) {
-  console.log(req.body);
   var form = new formidable.IncomingForm();
   form.multiples = true; //enable mutiple for formidable
-  form.uploadDir = "routes/resume/";
+  form.uploadDir = "resume/";
   var file_name, file_ext;
   var file_id;
 
@@ -419,7 +400,7 @@ router.post('/upload', function (req, res) {
     }
   })
 });
-
+*/
 
 
 /**
@@ -429,9 +410,9 @@ router.post('/upload', function (req, res) {
  * @param {function} callback The callback to call with the authorized client.
  */
 function authorize(credentials, callback) {
-  const { client_secret, client_id, redirect_uris } = credentials;//.installed;
+  const { client_secret, client_id, redirect_uris } = credentials.web;
   const oAuth2Client = new google.auth.OAuth2(
-    credentials.web.client_id, credentials.web.client_secret, "http://localhost:5000");
+    client_id, client_secret, redirect_uris[0]);
 
   // Check if we have previously stored a token.
   fs.readFile(TOKEN_PATH, (err, token) => {
@@ -475,52 +456,37 @@ function getAccessToken(oAuth2Client, callback) {
 
 
 
-
-
-
-router.get('/:id', function (req, res) {
-  var form = new formidable.IncomingForm();
-  form.multiples = true; //enable mutiple for formidable
-  form.uploadDir = "routes/resume/";
-
-
-  //end if    ///-------------------------------------------------------------------------
-  ///
-  // Load client secrets from a local file.
+router.get('/:id',  function (req, res) {
+  //var dest = fs.createWriteStream('./resume/' + req.params.name);
+  
   fs.readFile('./routes/credentials.json', (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);
     // Authorize a client with credentials, then call the Google Drive API.
     authorize(JSON.parse(content), downloadFiles);
-    //res.writeHead( 200, { 'Content-Type': 'application/pdf' } );
-    fs.createReadStream('./routes/resume/ok.pdf').pipe(res);//------
   });
 
-  function downloadFiles(auth) {
-    //const returnData = [];
-    const drive = google.drive({ version: 'v3', auth });
 
-    const fileId = req.params.id;
-    const dest = fs.createWriteStream('./routes/resume/ok.pdf');
-    /* drive.files.list().then((list,err) => {
-       console.log(list.data.files);
-     });*/
-    drive.files.get({ fileId: fileId, alt: 'media' }, { responseType: 'stream' },
+  async function downloadFiles(auth) {
+    const drive = google.drive({ version: 'v3', auth });
+    // Modified
+    let rStream = await drive.files.get(
+      { fileId: req.params.id, alt: "media" },
+      { responseType: "stream" }/*,
       function (err, res) {
         res.data
-          .on('end', () => {
-            console.log('Done');
+          .on("end", () => { // Modified
+            console.log("done");
           })
-          .on('error', err => {
-            console.log('Error', err);
+          .on("error", err => {
+            console.log("Error", err);
           })
-          .pipe(dest);
-      }
+          .pipe(fs.createWriteStream('./resume/' + req.params.name));
+      }*/
     );
 
+    rStream.data.pipe(res);
 
   };
-
-
 });
 
 
