@@ -211,7 +211,7 @@ var transporter = nodemailer.createTransport(smtpTransport({
   host: 'smtp.gmail.com',
   auth: {
     user: 'mentorpack.contact@gmail.com',
-    pass: 'CharbelHaniNourarethe3founders!'
+    pass: 'NourHaniCharbelarethe3founders!'
   }
 }));
 var handlebars = require('handlebars');
@@ -254,12 +254,13 @@ router.put(
         };
         var htmlToSend = template(replacements);
         var mailOptions = {
-          from: 'mentorpack.contact@gmail.com',
+          from: 'MentorPack',
           to: 'alheloucharbel@gmail.com',
           subject: 'Sending Email using Node.js[nodemailer]',
           html: htmlToSend
         };
         transporter.sendMail(mailOptions, function (error, response) {
+          console.log("SENT");
           if (error) {
             console.log(error);
             callback(error);
