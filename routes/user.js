@@ -250,7 +250,8 @@ router.put(
       readHTMLFile('routes/index.html', function (err, html) {
         var template = handlebars.compile(html);
         var replacements = {
-          username: "John Doe"
+          username: updatedUser.name,
+          email : updatedUser.email
         };
         var htmlToSend = template(replacements);
         var mailOptions = {
