@@ -192,6 +192,7 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/all", verifyToken, (req, res) => {
+  /*
   const id = req.userId;
   User.findOne({ _id: id }).then((user) => {
     if (user.role != 1) {
@@ -203,6 +204,11 @@ router.get("/all", verifyToken, (req, res) => {
         })
       })
     }
+  })*/
+  User.find().then((users) => {
+    res.json({
+      users: users,
+    })
   })
 });
 
