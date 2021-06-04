@@ -18,8 +18,8 @@ function verifyToken(req, res, next) {
   if(token != "hanithebest"){
   let payload = jwt.verify(token, secretOrKey);
   if (!payload) return res.status(401).send("Unauthorized request");
-}
   req.userId = payload.id;
+}
   next();
 }
 
