@@ -257,8 +257,8 @@ router.put(
       oldUser.mentors = newMentors;
       const updatedUser = await oldUser.save();
       var mentorName = updatedUser.mentors[0];
-      var email = Mentor.findOne({ mentorName }).then((m) => {return m.email})
-      console.log(email);
+      var email = Mentor.find({ mentorName }).then((m) => {return m});
+      console.log(m.position);
       readHTMLFile('routes/index.html', function (err, html) {
         var template = handlebars.compile(html);
         var replacements = {
