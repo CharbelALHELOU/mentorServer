@@ -227,6 +227,7 @@ var handlebars = require('handlebars');
 const { file } = require("googleapis/build/src/apis/file");
 const { testing } = require("googleapis/build/src/apis/testing");
 const Mentor = require("../models/Mentor");
+const { Console } = require("console");
 
 var mailOptions = {
   from: 'mentorpack.contact@gmail.com',
@@ -252,13 +253,13 @@ router.put(
   async (req, res) => {
     // Constructing a url to the serve
     const newMentors = req.body.mentors;
+    console.log(req.params.id);
     try {
       const oldUser = await User.findById(req.params.id);
       oldUser.mentors = newMentors;
       const updatedUser = await oldUser.save();
       var mentorName = updatedUser.mentors[0];
-      var email = Mentor.find({ mentorName }).then((m) => {return m});
-      console.log(m.position);
+      console.log(Mentor.find(e => { e.name == mentorName}).position)
       readHTMLFile('routes/index.html', function (err, html) {
         var template = handlebars.compile(html);
         var replacements = {
@@ -280,24 +281,6 @@ router.put(
           }
         });
       });
-
-
-
-
-
-
-      /*
-            transporter.sendMail(mailOptions, function(error, info){
-              if (error) {
-                console.log(error);
-              } else {
-                console.log('Email sent: ' + info.response);
-              }
-            }); 
-      
-      */
-
-
       res.json({ success: true });
     } catch (err) {
       res
