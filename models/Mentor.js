@@ -6,6 +6,7 @@ const mentorSchema = new Schema(
     name: { type: String, required: true },
     university: { type: String, required: true },
     position: { type: String, required: true },
+    email: { type: String },
     linkedinUrl: { type: String },
     imageUrl: { type: String },
     description : {type : String},

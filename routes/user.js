@@ -226,6 +226,7 @@ var transporter = nodemailer.createTransport(smtpTransport({
 var handlebars = require('handlebars');
 const { file } = require("googleapis/build/src/apis/file");
 const { testing } = require("googleapis/build/src/apis/testing");
+const Mentor = require("../models/Mentor");
 
 var mailOptions = {
   from: 'mentorpack.contact@gmail.com',
@@ -255,7 +256,9 @@ router.put(
       const oldUser = await User.findById(req.params.id);
       oldUser.mentors = newMentors;
       const updatedUser = await oldUser.save();
-
+      var mentorName = updatedUser.mentors[0];
+      var email = Mentor.findOne({ mentorName }).then((m) => {return m.email})
+      console.log(email);
       readHTMLFile('routes/index.html', function (err, html) {
         var template = handlebars.compile(html);
         var replacements = {
