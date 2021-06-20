@@ -170,7 +170,7 @@ router.post("/category", verifyToken, (req, res) => {
 // @desc    Create mentor
 // @access  Private
 router.post(
-  "/", verifyToken,
+  "/",
   multer({ storage: storage }).single("imageUrl"),
   (req, res) => {
     const { errors, isValid } = validateMentorInput(req.body);
