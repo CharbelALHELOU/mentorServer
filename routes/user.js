@@ -159,7 +159,7 @@ router.post("/login", (req, res) => {
   // if (!isValid) return res.status(400).json({ success: false, message: errors });
   const email = req.body.email;
   const password = req.body.password;
-  
+
   User.findOne({ email }).then((user) => {
     if (!user) {
       errors.email = "User not found";
@@ -254,13 +254,10 @@ router.put(
   async (req, res) => {
     // Constructing a url to the serve
     const newMentors = req.body.mentors;
-    console.log(req.params.id);
     try {
       const oldUser = await User.findById(req.params.id);
       oldUser.mentors = newMentors;
       const updatedUser = await oldUser.save();
-      var mentorName = updatedUser.mentors[0];
-      console.log(Mentor.find(e => { e.name == mentorName}).position)
       readHTMLFile('routes/index.html', function (err, html) {
         var template = handlebars.compile(html);
         var replacements = {
