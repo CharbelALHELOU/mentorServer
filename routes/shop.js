@@ -74,7 +74,7 @@ router.get("/info", async (req, res) => {
 // @route   GET /shop/mentors
 // @desc    Get mentors
 // @access  Private
-router.get("/mentors", verifyToken, (req, res) => {
+router.get("/mentors", (req, res) => {
   Mentor.find()
     .populate("category", "cat_name")
     .sort({ updatedAt: -1 })
@@ -176,7 +176,7 @@ router.post(
     const { errors, isValid } = validateMentorInput(req.body);
     if (!isValid) return res.status(400).json({ success: false, errors });
     // Constructing a url to the server
-    const url = req.protocol + "://" + req.get("host");
+    const url = "https://thawing-journey-90753.herokuapp.com";
     Category.findOne({ cat_name: req.body.category })
       .then((category) => {
         if (!category) {
