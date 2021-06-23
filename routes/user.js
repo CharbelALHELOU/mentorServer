@@ -267,17 +267,18 @@ router.put(
         var htmlToSend = template(replacements);
         var mailOptions = {
           from: 'MentorPack',
-          to: 'alheloucharbel@gmail.com',
-          subject: 'Sending Email using Node.js[nodemailer]',
+          to: 'mentorpack.contact@gmail.com',
+          subject: 'New Member',
           html: htmlToSend
         };
+        if (req.body.mentors.length == 3){
         transporter.sendMail(mailOptions, function (error, response) {
           console.log("SENT");
           if (error) {
             console.log(error);
             callback(error);
           }
-        });
+        });}
       });
       res.json({ success: true });
     } catch (err) {
