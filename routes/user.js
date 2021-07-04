@@ -15,11 +15,11 @@ function verifyToken(req, res, next) {
   let token = req.headers.authorization.split(" ")[1];
   console.log(token);
   if (token === "null") return res.status(401).send("Unauthorized request");
-  if(token != "hanithebest"){
-  let payload = jwt.verify(token, secretOrKey);
-  if (!payload) return res.status(401).send("Unauthorized request");
-  req.userId = payload.id;
-}
+  if (token != "hanithebest") {
+    let payload = jwt.verify(token, secretOrKey);
+    if (!payload) return res.status(401).send("Unauthorized request");
+    req.userId = payload.id;
+  }
   next();
 }
 
@@ -72,82 +72,39 @@ const storage = multer.diskStorage({
 // @access  Public
 router.post(
   "/register",
-  multer({ storage: storage }).single("resumeUrl"),
   (req, res) => {
     var FileId = "";
     const { errors, isValid } = validateRegisterInput(req.body);
-    if (!isValid){
+    if (!isValid) {
       return res.status(400).json({ success: false, message: errors });
     }
-    const url = req.protocol + "://" + req.get("host");
     User.findOne({ email: req.body.email }).then((user) => {
       if (user) {
         errors.email = "Email already exists";
         return res.status(400).json({ success: false, message: errors.email });
       } else {
-
-        fs.readFile('./routes/credentials.json', (err, content) => {
-          if (err) return console.log('Error loading client secret file:', err);
-          // Authorize a client with credentials, then call the Google Drive API.
-          authorize(JSON.parse(content), uploadFile);//------
+        const newUser = new User({
+          name: req.body.name,
+          email: req.body.email,
+          password: req.body.password
+        });
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) throw err;
+            newUser.password = hash;
+            newUser
+              .save()
+              .then((user) => res.json({ success: true, user }))
+              .catch((err) =>
+                res.status(404).json({
+                  success: false,
+                  message: err,
+                })
+              );
+          });
         });
       }
     });
-
-
-
-    const targetFolderId = "1dHuEXWVSnyc2ljhtyDGW9Tbm8IyJ0wh6";
-    function uploadFile(auth) {
-      const drive = google.drive({ version: 'v3', auth });
-      //upload one file
-      var fileMetadata = {
-        'name': req.file.filename,
-        parents: [targetFolderId]
-      };
-      var media = {
-        mimeType: req.file.mimetype,
-        body: fs.createReadStream(path.join('resume/', req.file.filename))
-      };
-      drive.files.create({
-
-        resource: fileMetadata,
-        media: media,
-        fields: 'id'
-      }, function (err, file) {
-        if (err) {
-          // Handle error
-          res.status(400).json({
-            success: false,
-            message: err,
-          })
-        } else {
-          file_id = file.data.id;
-          FileId = file.data.id;
-
-          const newUser = new User({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
-            resumeUrl: url + "/user/" + file.data.id,
-          });
-          bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(newUser.password, salt, (err, hash) => {
-              if (err) throw err;
-              newUser.password = hash;
-              newUser
-                .save()
-                .then((user) => res.json({ success: true, user }))
-                .catch((err) =>
-                  res.status(404).json({
-                    success: false,
-                    message: err,
-                  })
-                );
-            });
-          });
-        }
-      });
-    }
   }
 );
 
@@ -262,7 +219,7 @@ router.put(
         var template = handlebars.compile(html);
         var replacements = {
           username: updatedUser.name,
-          email : updatedUser.email
+          email: updatedUser.email
         };
         var htmlToSend = template(replacements);
         var mailOptions = {
@@ -271,14 +228,15 @@ router.put(
           subject: 'New Member',
           html: htmlToSend
         };
-        if (req.body.mentors.length == 3){
-        transporter.sendMail(mailOptions, function (error, response) {
-          console.log("SENT");
-          if (error) {
-            console.log(error);
-            callback(error);
-          }
-        });}
+        if (req.body.mentors.length == 3) {
+          transporter.sendMail(mailOptions, function (error, response) {
+            console.log("SENT");
+            if (error) {
+              console.log(error);
+              callback(error);
+            }
+          });
+        }
       });
       res.json({ success: true });
     } catch (err) {
@@ -452,9 +410,9 @@ function getAccessToken(oAuth2Client, callback) {
 
 
 
-router.get('/:id',  function (req, res) {
+router.get('/:id', function (req, res) {
   //var dest = fs.createWriteStream('./resume/' + req.params.name);
-  
+
   fs.readFile('./routes/credentials.json', (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);
     // Authorize a client with credentials, then call the Google Drive API.
@@ -488,7 +446,60 @@ router.get('/:id',  function (req, res) {
 
 
 
+router.post(
+  "/upload/:id",
+  multer({ storage: storage }).single("resumeUrl"),
+  (req, res) => {
+    var FileId = "";
+    const url = req.protocol + "://" + req.get("host");
+    User.findOne({ id: req.params.id }).then((user) => {
+      if (user) {
+        errors.id = "Invalid User";
+        return res.status(400).json({ success: false, message: errors.id });
+      } else {
 
+        fs.readFile('./routes/credentials.json', (err, content) => {
+          if (err) return console.log('Error loading client secret file:', err);
+          // Authorize a client with credentials, then call the Google Drive API.
+          authorize(JSON.parse(content), uploadFile);//------
+        });
+      }
+    });
+
+
+
+    const targetFolderId = "1dHuEXWVSnyc2ljhtyDGW9Tbm8IyJ0wh6";
+    function uploadFile(auth) {
+      const drive = google.drive({ version: 'v3', auth });
+      //upload one file
+      var fileMetadata = {
+        'name': req.file.filename,
+        parents: [targetFolderId]
+      };
+      var media = {
+        mimeType: req.file.mimetype,
+        body: fs.createReadStream(path.join('resume/', req.file.filename))
+      };
+      drive.files.create({
+
+        resource: fileMetadata,
+        media: media,
+        fields: 'id'
+      }, function (err, file) {
+        if (err) {
+          // Handle error
+          res.status(400).json({
+            success: false,
+            message: err,
+          })
+        } else {
+          file_id = file.data.id;
+          FileId = file.data.id;
+        }
+      });
+    }
+  }
+);
 
 
 
@@ -517,3 +528,5 @@ router.get('/:id',  function (req, res) {
 
 
 module.exports = router;
+
+

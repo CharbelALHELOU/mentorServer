@@ -7,7 +7,6 @@ const userSchema = new Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   resumeUrl: { type: String },
-  foundMentors : { type: Number, required: true, default: -1 },
   mentors: [String ],
 });
 
