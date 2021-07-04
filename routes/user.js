@@ -74,6 +74,7 @@ router.post(
   "/register",
   (req, res) => {
     var FileId = "";
+    console.log(req.body);
     const { errors, isValid } = validateRegisterInput(req.body);
     if (!isValid) {
       return res.status(400).json({ success: false, message: errors });
