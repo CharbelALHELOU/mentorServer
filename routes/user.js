@@ -70,8 +70,8 @@ var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 
 var transporter = nodemailer.createTransport(smtpTransport({
-  service: 'gmail',
-  host: 'smtp.gmail.com',
+  service: 'Gmail',
+  //host: 'smtp.gmail.com',
   auth: {
     user: 'mentorpack.contact@gmail.com',
     pass: 'NourHaniCharbelarethe3founders!'
@@ -83,12 +83,6 @@ const { testing } = require("googleapis/build/src/apis/testing");
 const Mentor = require("../models/Mentor");
 const { Console } = require("console");
 
-var mailOptions = {
-  from: 'mentorpack.contact@gmail.com',
-  to: 'alheloucharbel@gmail.com',
-  subject: 'Sending Email using Node.js[nodemailer]',
-  text: "test test test"
-};
 
 var readHTMLFile = function (path, callback) {
   fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
