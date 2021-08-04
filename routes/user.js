@@ -66,35 +66,23 @@ const storage = multer.diskStorage({
   },
 });
 //----------------------------------Routes----------------------------------//
-var nodemailer = require('nodemailer');
-var smtpTransport = require('nodemailer-smtp-transport');
 
-var transporter = nodemailer.createTransport(smtpTransport({
-  service: 'Gmail',
-  host: 'smtp.gmail.com',
-  auth: {
-    user: 'mentorpack.contact@gmail.com',
-    pass: 'NourHaniCharbelarethe3founders!'
-  }
-}));
 var handlebars = require('handlebars');
 const { file } = require("googleapis/build/src/apis/file");
 const { testing } = require("googleapis/build/src/apis/testing");
 const Mentor = require("../models/Mentor");
 const { Console } = require("console");
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'mentorpack.contact@gmail.com',
+    pass: 'zsepvcdpogakytry',
+  },
+});
 
 
-var readHTMLFile = function (path, callback) {
-  fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
-    if (err) {
-      throw err;
-      callback(err);
-    }
-    else {
-      callback(null, html);
-    }
-  });
-};
 // @route   POST /user/register
 // @desc    Register user
 // @access  Public
@@ -120,27 +108,15 @@ router.post(
           major: req.body.major,
           university: req.body.university
         });
-        readHTMLFile('routes/index.html', function (err, html) {
-          var template = handlebars.compile(html);
-          var replacements = {
-            username: newUser.name
-          };
-          var htmlToSend = template(replacements);
-          var mailOptions = {
-            from: 'MentorPack',
-            to: newUser.email,
-            subject: 'Welcome to MentorPack',
-            html: htmlToSend
-          };
-          transporter.sendMail(mailOptions, function (error, response) {
-            
-            if (error) {
-              console.log(error);
-              callback(error);
-            }
-            console.log("SENT");
-          });
-        });
+        console.log("user created .... sending email ....");
+        transporter.sendMail({
+          from: "mentorpack.contact@gmail.com", // sender address
+          to: newUser.email , // list of receivers
+          subject: "Medium @edigleyssonsilva ✔", // Subject line
+          text: "There is a new article. It's about sending emails, check it out!", // plain text body
+        }).then(info => {
+          console.log({ info });
+        }).catch(console.error);
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(newUser.password, salt, (err, hash) => {
             if (err) throw err;
@@ -154,7 +130,7 @@ router.post(
                   message: err,
                 })
               );
-            
+
           });
         });
       }
