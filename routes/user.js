@@ -203,19 +203,6 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/all", verifyToken, (req, res) => {
-  /*
-  const id = req.userId;
-  User.findOne({ _id: id }).then((user) => {
-    if (user.role != 1) {
-      return res.status(401).send("error");
-    } else {
-      User.find().then((users) => {
-        res.json({
-          users: users,
-        })
-      })
-    }
-  })*/
   User.find({}).then((users) => {
     res.json({
       users: users,
@@ -223,7 +210,7 @@ router.get("/all", verifyToken, (req, res) => {
   })
 });
 
-
+/*
 
 router.put(
   "/:id",
@@ -267,7 +254,7 @@ router.put(
 
   }
 );
-/*4%2F0AY0e-g6LfuoBMP77DvISlMO65-FYWzS9zZvP-7VlGtmPJM_coqDVpGBadRDxPScu5KzE8g
+
 
       fs.readFile('./routes/credentials.json', (err, content) => {
         if (err) return console.log('Error loading client secret file:', err);
@@ -376,12 +363,7 @@ router.post('/upload', function (req, res) {
 */
 
 
-/**
- * Create an OAuth2 client with the given credentials, and then execute the
- * given callback function.
- * @param {Object} credentials The authorization client credentials.
- * @param {function} callback The callback to call with the authorized client.
- */
+/*
 function authorize(credentials, callback) {
   const { client_secret, client_id, redirect_uris } = credentials.web;
   const oAuth2Client = new google.auth.OAuth2(
@@ -395,12 +377,7 @@ function authorize(credentials, callback) {
   });
 }
 
-/**
- * Get and store new token after prompting for user authorization, and then
- * execute the given callback with the authorized OAuth2 client.
- * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
- * @param {getEventsCallback} callback The callback for the authorized client.
- */
+
 function getAccessToken(oAuth2Client, callback) {
   const authUrl = oAuth2Client.generateAuthUrl({
     access_type: 'offline',
@@ -427,40 +404,6 @@ function getAccessToken(oAuth2Client, callback) {
 }
 
 
-
-
-router.get('/:id', function (req, res) {
-  //var dest = fs.createWriteStream('./resume/' + req.params.name);
-
-  fs.readFile('./routes/credentials.json', (err, content) => {
-    if (err) return console.log('Error loading client secret file:', err);
-    // Authorize a client with credentials, then call the Google Drive API.
-    authorize(JSON.parse(content), downloadFiles);
-  });
-
-
-  async function downloadFiles(auth) {
-    const drive = google.drive({ version: 'v3', auth });
-    // Modified
-    let rStream = await drive.files.get(
-      { fileId: req.params.id, alt: "media" },
-      { responseType: "stream" }/*,
-      function (err, res) {
-        res.data
-          .on("end", () => { // Modified
-            console.log("done");
-          })
-          .on("error", err => {
-            console.log("Error", err);
-          })
-          .pipe(fs.createWriteStream('./resume/' + req.params.name));
-      }*/
-    );
-
-    rStream.data.pipe(res);
-
-  };
-});
 
 
 
@@ -520,7 +463,7 @@ router.post(
   }
 );
 
-
+*/
 
 
 
@@ -547,5 +490,8 @@ router.post(
 
 
 module.exports = router;
+
+
+
 
 
