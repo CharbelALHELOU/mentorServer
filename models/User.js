@@ -6,6 +6,9 @@ const userSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
+  age: { type: String, required: true },
+  major: { type: String, required: true },
+  university: { type: String, required: true },
   resumeUrl: { type: String },
   mentors: [String ],
 });
