@@ -129,7 +129,7 @@ router.post(
         readHTMLFile('routes/index.html', function (err, html) {
           var template = handlebars.compile(html);
           var replacements = {
-            username: updatedUser.name
+            username: newUser.name
           };
           var htmlToSend = template(replacements);
           var mailOptions = {
