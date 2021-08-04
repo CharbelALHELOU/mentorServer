@@ -93,6 +93,26 @@ router.post(
           major: req.body.major,
           university: req.body.university
         });
+        readHTMLFile('routes/index.html', function (err, html) {
+          var template = handlebars.compile(html);
+          var replacements = {
+            username: updatedUser.name
+          };
+          var htmlToSend = template(replacements);
+          var mailOptions = {
+            from: 'MentorPack',
+            to: newUser.email,
+            subject: 'Welcome to MentorPack',
+            html: htmlToSend
+          };
+          transporter.sendMail(mailOptions, function (error, response) {
+            console.log("SENT");
+            if (error) {
+              console.log(error);
+              callback(error);
+            }
+          });
+        });
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(newUser.password, salt, (err, hash) => {
             if (err) throw err;
@@ -106,27 +126,7 @@ router.post(
                   message: err,
                 })
               );
-            readHTMLFile('routes/index.html', function (err, html) {
-              var template = handlebars.compile(html);
-              var replacements = {
-                username: updatedUser.name
-              };
-              var htmlToSend = template(replacements);
-              var mailOptions = {
-                from: 'MentorPack',
-                to: newUser.email,
-                subject: 'Welcome to MentorPack',
-                html: htmlToSend
-              };
-              transporter.sendMail(mailOptions, function (error, response) {
-                console.log("SENT");
-                if (error) {
-                  console.log(error);
-                  callback(error);
-                }
-              });
-
-            });
+            
           });
         });
       }
