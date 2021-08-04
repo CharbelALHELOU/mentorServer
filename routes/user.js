@@ -71,7 +71,7 @@ var smtpTransport = require('nodemailer-smtp-transport');
 
 var transporter = nodemailer.createTransport(smtpTransport({
   service: 'Gmail',
-  //host: 'smtp.gmail.com',
+  host: 'smtp.gmail.com',
   auth: {
     user: 'mentorpack.contact@gmail.com',
     pass: 'NourHaniCharbelarethe3founders!'
@@ -133,11 +133,12 @@ router.post(
             html: htmlToSend
           };
           transporter.sendMail(mailOptions, function (error, response) {
-            console.log("SENT");
+            
             if (error) {
               console.log(error);
               callback(error);
             }
+            console.log("SENT");
           });
         });
         bcrypt.genSalt(10, (err, salt) => {
