@@ -66,7 +66,41 @@ const storage = multer.diskStorage({
   },
 });
 //----------------------------------Routes----------------------------------//
+var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
 
+var transporter = nodemailer.createTransport(smtpTransport({
+  service: 'gmail',
+  host: 'smtp.gmail.com',
+  auth: {
+    user: 'mentorpack.contact@gmail.com',
+    pass: 'NourHaniCharbelarethe3founders!'
+  }
+}));
+var handlebars = require('handlebars');
+const { file } = require("googleapis/build/src/apis/file");
+const { testing } = require("googleapis/build/src/apis/testing");
+const Mentor = require("../models/Mentor");
+const { Console } = require("console");
+
+var mailOptions = {
+  from: 'mentorpack.contact@gmail.com',
+  to: 'alheloucharbel@gmail.com',
+  subject: 'Sending Email using Node.js[nodemailer]',
+  text: "test test test"
+};
+
+var readHTMLFile = function (path, callback) {
+  fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
+    if (err) {
+      throw err;
+      callback(err);
+    }
+    else {
+      callback(null, html);
+    }
+  });
+};
 // @route   POST /user/register
 // @desc    Register user
 // @access  Public
@@ -74,7 +108,6 @@ router.post(
   "/register",
   (req, res) => {
     var FileId = "";
-    console.log(req.body);
     const { errors, isValid } = validateRegisterInput(req.body);
     if (!isValid) {
       return res.status(400).json({ success: false, message: errors });
@@ -196,41 +229,7 @@ router.get("/all", verifyToken, (req, res) => {
   })
 });
 
-var nodemailer = require('nodemailer');
-var smtpTransport = require('nodemailer-smtp-transport');
 
-var transporter = nodemailer.createTransport(smtpTransport({
-  service: 'gmail',
-  host: 'smtp.gmail.com',
-  auth: {
-    user: 'mentorpack.contact@gmail.com',
-    pass: 'NourHaniCharbelarethe3founders!'
-  }
-}));
-var handlebars = require('handlebars');
-const { file } = require("googleapis/build/src/apis/file");
-const { testing } = require("googleapis/build/src/apis/testing");
-const Mentor = require("../models/Mentor");
-const { Console } = require("console");
-
-var mailOptions = {
-  from: 'mentorpack.contact@gmail.com',
-  to: 'alheloucharbel@gmail.com',
-  subject: 'Sending Email using Node.js[nodemailer]',
-  text: "test test test"
-};
-
-var readHTMLFile = function (path, callback) {
-  fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
-    if (err) {
-      throw err;
-      callback(err);
-    }
-    else {
-      callback(null, html);
-    }
-  });
-};
 
 router.put(
   "/:id",
