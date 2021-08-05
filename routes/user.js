@@ -116,7 +116,7 @@ router.post(
           from: "mentorpack.contact@gmail.com", // sender address
           to: newUser.email , // list of receivers
           subject: "Welcome to MentorPack", // Subject line
-          html: '<h2>Welcome '+ newUser.name +'</h2><p>You are successfully registered !</p> <p>Please find below the link to our secured platform to submit your resume.</p>'// plain text body
+          html: '<h2>Welcome '+ newUser.name +' ! </h2><p>You are successfully registered !</p> <p>Please find below the link to our secured platform to submit your resume.</p>'// plain text body
         }).then(info => {
           console.log({ info });
         }).catch(console.error);
