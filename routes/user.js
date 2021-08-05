@@ -23,19 +23,18 @@ function verifyToken(req, res, next) {
   next();
 }
 
-/*-------------------------------------------*/
+/*-------------------------------------------
 formidable = require('formidable'),
   fs = require('fs'),
   path = require('path');
 const readline = require('readline');
-const { google } = require('googleapis');
 const { gmail } = require("googleapis/build/src/apis/gmail");
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/drive'];///-----'https://www.googleapis.com/auth/drive',
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
-const TOKEN_PATH = 'token.json';
+const TOKEN_PATH = 'token.json';*/
 /*-------------------------------------------*/
 
 // Multer configuration
@@ -51,7 +50,7 @@ const storage = multer.diskStorage({
     const isValidFile = MIME_TYPE_MAP[file.mimetype];
     let error = new Error("Invalid mime type");
     if (isValidFile) error = null;
-    cb(error, "./resume");
+    cb(error, "./routes/resume");
   },
   filename: (req, file, cb) => {
     const name = file.originalname
@@ -114,9 +113,9 @@ router.post(
         console.log("user created .... sending email ....");
         transporter.sendMail({
           from: "mentorpack.contact@gmail.com", // sender address
-          to: newUser.email , // list of receivers
+          to: newUser.email, // list of receivers
           subject: "Welcome to MentorPack", // Subject line
-          html: '<h2>Welcome '+ newUser.name +' ! </h2><p>You are successfully registered !</p> <p>Please find below the link to our secured platform to submit your resume.</p>'// plain text body
+          html: '<h2>Welcome ' + newUser.name + ' ! </h2><p>You are successfully registered !</p> <p>Please find below the link to our secured platform to submit your resume.</p>'// plain text body
         }).then(info => {
           console.log({ info });
         }).catch(console.error);
@@ -140,6 +139,7 @@ router.post(
     });
   }
 );
+/*------------------------------------------------------------------------------------------*/
 
 // @route   POST /user/login
 // @desc    Login user | Returning JWT Token
@@ -181,7 +181,7 @@ router.post("/login", (req, res) => {
     });
   });
 });
-
+/*------------------------------------------------------------------------------------------*/
 router.get("/all", verifyToken, (req, res) => {
   User.find({}).then((users) => {
     res.json({
@@ -190,98 +190,160 @@ router.get("/all", verifyToken, (req, res) => {
   })
 });
 
-/*
 
-router.put(
-  "/:id",
+
+
+
+/*------------------------------------------------------------------------------------------*/
+
+//googleapis
+const { google } = require('googleapis');
+
+//path module
+const path = require('path');
+
+//file system module
+const fs = require('fs');
+const { remotebuildexecution } = require("googleapis/build/src/apis/remotebuildexecution");
+
+//client id
+const CLIENT_ID = '142174750784-d3oearjqohm2t3hm69clqib1l0mj5vbe.apps.googleusercontent.com'
+
+//client secret
+const CLIENT_SECRET = '8J7FrLph6edpSJBERZjcdSVb';
+
+//redirect URL
+const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
+
+//refresh token
+const REFRESH_TOKEN = '1//041NojfWEnGDpCgYIARAAGAQSNwF-L9Ireu_yRfqSiro02Pk19JEqiMWVSEnogfv4tChw0wRdkuWAQk5wJzafc8Z2xqydCAdbBOU'
+
+
+//intialize auth client
+const oauth2Client = new google.auth.OAuth2(
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI
+);
+
+//setting our auth credentials
+oauth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
+
+//initialize google drive
+const drive = google.drive({
+  version: 'v3',
+  auth: oauth2Client,
+});
+
+//function to upload the file
+async function uploadFile(filePath, fileName, fileMime) {
+  try {
+    const targetFolderId = "1dHuEXWVSnyc2ljhtyDGW9Tbm8IyJ0wh6";
+    const response = await drive.files.create({
+      requestBody: {
+        name: fileName, //file name
+        mimeType: fileMime,
+        parents: [targetFolderId]
+      },
+      media: {
+        mimeType: fileMime,
+        body: fs.createReadStream(filePath),
+      },
+    });
+
+    await drive.permissions.create({
+      fileId: response.data.id,
+      requestBody: {
+        role: 'reader',
+        type: 'anyone',
+      },
+    });
+
+    const result = await drive.files.get({
+      fileId: response.data.id,
+      fields: 'webViewLink, webContentLink',
+    });
+
+    console.log(result.data.webViewLink);
+    return "https://drive.google.com/file/d/" + response.data.id + "/view?usp=drivesdk";
+  } catch (error) {
+    return "error";
+  }
+}
+
+
+/*
+router.post("/upload/:id", multer({ storage: storage }).single("resume"), (req, res) => {
+  const filePath = path.join(__dirname, 'resume/', req.file.filename);
+  var url = uploadFile(filePath, req.file.filename, req.file.mimetype);
+  const user = User.findById(req.params.id);
+
+  user.resumeUrl = url;
+  const updatedUser = user.save();
+  res.json({ success: true, mentor: updatedMentor });
+});*/
+
+
+
+router.post(
+  "/upload/:id",
+  multer({ storage: storage }).single("resume"),
   async (req, res) => {
-    // Constructing a url to the serve
-    const newMentors = req.body.mentors;
+    const filePath = path.join(__dirname, 'resume/', req.file.filename);
+    const fileName = req.file.filename;
+    const fileMime = req.file.mimetype;
     try {
       const oldUser = await User.findById(req.params.id);
-      oldUser.mentors = newMentors;
-      const updatedUser = await oldUser.save();
-      readHTMLFile('routes/index.html', function (err, html) {
-        var template = handlebars.compile(html);
-        var replacements = {
-          username: updatedUser.name,
-          email: updatedUser.email
-        };
-        var htmlToSend = template(replacements);
-        var mailOptions = {
-          from: 'MentorPack',
-          to: 'mentorpack.contact@gmail.com',
-          subject: 'New Member',
-          html: htmlToSend
-        };
-        if (req.body.mentors.length == 3) {
-          transporter.sendMail(mailOptions, function (error, response) {
-            console.log("SENT");
-            if (error) {
-              console.log(error);
-              callback(error);
-            }
-          });
-        }
-      });
-      res.json({ success: true });
+      if (oldUser.resumeUrl = "") {
+        const targetFolderId = "1dHuEXWVSnyc2ljhtyDGW9Tbm8IyJ0wh6";
+        const response = await drive.files.create({
+          requestBody: {
+            name: fileName, //file name
+            mimeType: fileMime,
+            parents: [targetFolderId]
+          },
+          media: {
+            mimeType: fileMime,
+            body: fs.createReadStream(filePath),
+          },
+        });
+
+        await drive.permissions.create({
+          fileId: response.data.id,
+          requestBody: {
+            role: 'reader',
+            type: 'anyone',
+          },
+        });
+
+        const result = await drive.files.get({
+          fileId: response.data.id,
+          fields: 'webViewLink, webContentLink',
+        });
+
+        oldUser.resumeUrl = result.data.webViewLink;
+
+        const updatedUser = await oldUser.save();
+        res.json({ success: true, user: updatedUser });
+      }
+      else {
+        res.json({ success: false, message: "Resume already uploaded" });
+      }
     } catch (err) {
       res
         .status(404)
-        .json({ success: false, message: "Failed to update mentor" });
+        .json({ success: false, message: "Failed to upload resume" });
     }
-
-
   }
 );
 
 
-      fs.readFile('./routes/credentials.json', (err, content) => {
-        if (err) return console.log('Error loading client secret file:', err);
-        // Authorize a client with credentials, then call the Google Drive API.
-        authorize(JSON.parse(content), sendMessage);//------
-      });
 
 
 
-    function makeBody(to, from, subject, message) {
-      var str = ["Content-Type: text/plain; charset=\"UTF-8\"\n",
-        "MIME-Version: 1.0\n",
-        "Content-Transfer-Encoding: 7bit\n",
-        "to: ", to, "\n",
-        "from: ", from, "\n",
-        "subject: ", subject, "\n\n",
-        message
-      ].join('');
-
-      var encodedMail = new Buffer((str).toString("base64").replace(/\+/g, '-').replace(/\//g, '_'));
-      return encodedMail;
-    }
-
-    function sendMessage(auth) {
-      const gmail = google.gmail({ version: 'v1', auth });
-      var raw = makeBody('alheloucharbel@gmail.com', 'mentorpack.contact@gmail.com', 'Mentorpack test', "helloooooo");
-      gmail.users.messages.send({
-        auth: auth,
-        userId: 'me',
-        resource: {
-          raw: raw
-        }
-      }, function (err, response) {
-        console.log(err );
-      });
-    }
-
-
-
-
-
-
-
-
-
-
+/*
 router.post('/upload', function (req, res) {
+  console.log(req);
   var form = new formidable.IncomingForm();
   form.multiples = true; //enable mutiple for formidable
   form.uploadDir = "resume/";
@@ -340,10 +402,10 @@ router.post('/upload', function (req, res) {
     }
   })
 });
-*/
 
 
-/*
+
+
 function authorize(credentials, callback) {
   const { client_secret, client_id, redirect_uris } = credentials.web;
   const oAuth2Client = new google.auth.OAuth2(
@@ -356,7 +418,7 @@ function authorize(credentials, callback) {
     callback(oAuth2Client);
   });
 }
-
+/*
 
 function getAccessToken(oAuth2Client, callback) {
   const authUrl = oAuth2Client.generateAuthUrl({
