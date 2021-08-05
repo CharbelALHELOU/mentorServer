@@ -235,55 +235,6 @@ const drive = google.drive({
   auth: oauth2Client,
 });
 
-//function to upload the file
-async function uploadFile(filePath, fileName, fileMime) {
-  try {
-    const targetFolderId = "1dHuEXWVSnyc2ljhtyDGW9Tbm8IyJ0wh6";
-    const response = await drive.files.create({
-      requestBody: {
-        name: fileName, //file name
-        mimeType: fileMime,
-        parents: [targetFolderId]
-      },
-      media: {
-        mimeType: fileMime,
-        body: fs.createReadStream(filePath),
-      },
-    });
-
-    await drive.permissions.create({
-      fileId: response.data.id,
-      requestBody: {
-        role: 'reader',
-        type: 'anyone',
-      },
-    });
-
-    const result = await drive.files.get({
-      fileId: response.data.id,
-      fields: 'webViewLink, webContentLink',
-    });
-
-    console.log(result.data.webViewLink);
-    return "https://drive.google.com/file/d/" + response.data.id + "/view?usp=drivesdk";
-  } catch (error) {
-    return "error";
-  }
-}
-
-
-/*
-router.post("/upload/:id", multer({ storage: storage }).single("resume"), (req, res) => {
-  const filePath = path.join(__dirname, 'resume/', req.file.filename);
-  var url = uploadFile(filePath, req.file.filename, req.file.mimetype);
-  const user = User.findById(req.params.id);
-
-  user.resumeUrl = url;
-  const updatedUser = user.save();
-  res.json({ success: true, mentor: updatedMentor });
-});*/
-
-
 
 router.post(
   "/upload/:id",
@@ -294,7 +245,7 @@ router.post(
     const fileMime = req.file.mimetype;
     try {
       const oldUser = await User.findById(req.params.id);
-      if (oldUser.resumeUrl = "") {
+      if (oldUser.resumeUrl == "") {
         const targetFolderId = "1dHuEXWVSnyc2ljhtyDGW9Tbm8IyJ0wh6";
         const response = await drive.files.create({
           requestBody: {
@@ -324,12 +275,22 @@ router.post(
         oldUser.resumeUrl = result.data.webViewLink;
 
         const updatedUser = await oldUser.save();
+
+        transporter.sendMail({
+          from: "mentorpack.contact@gmail.com", // sender address
+          to: oldUser.email, // list of receivers
+          subject: "Resume well recieved", // Subject line
+          html: '<h2>Hello ' + oldUser.name + ' ! </h2><p>You are successfully registered !</p> <p>We have successfully recieved your resume and we will start looking at your profile to find you the best match</p>'// plain text body
+        }).then(info => {
+          console.log({ info });
+        }).catch(console.error);
         res.json({ success: true, user: updatedUser });
       }
       else {
         res.json({ success: false, message: "Resume already uploaded" });
       }
     } catch (err) {
+      console.log(err);
       res
         .status(404)
         .json({ success: false, message: "Failed to upload resume" });
