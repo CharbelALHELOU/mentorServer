@@ -240,7 +240,7 @@ router.post(
   "/upload/:id",
   multer({ storage: storage }).single("resume"),
   async (req, res) => {
-    const filePath = path.join(__dirname, 'resume/', req.file.filename);
+    const filePath = path.join('./routes/resume/', req.file.filename);
     const fileName = req.file.filename;
     const fileMime = req.file.mimetype;
     try {
