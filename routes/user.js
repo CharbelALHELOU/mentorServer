@@ -247,7 +247,7 @@ router.post(
     const fileMime = req.file.mimetype;
     try {
       const oldUser = await User.findById(req.params.id);
-      if (oldUser.resumeUrl == "") {
+      if (oldUser.resumeUrl == "none") {
         const targetFolderId = "1dHuEXWVSnyc2ljhtyDGW9Tbm8IyJ0wh6";
         const response = await drive.files.create({
           requestBody: {
