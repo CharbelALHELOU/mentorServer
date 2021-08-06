@@ -9,7 +9,7 @@ const userSchema = new Schema({
   age: { type: String, required: true },
   major: { type: String, required: true },
   university: { type: String, required: true },
-  resumeUrl: { type: String, required: true, default : 0},
+  resumeUrl: { type: String, required: true, default : ""},
   mentors: [String ],
 });
 
