@@ -189,7 +189,7 @@ router.post(
           name: req.body.name,
           university: req.body.university,
           position: req.body.position,
-          description : req.body.description,
+          description: req.body.description,
           linkedinUrl: req.body.linkedinUrl,
           imageUrl: url + "/images/" + req.file.filename,
           category: category._id,
@@ -324,6 +324,53 @@ router.get("/current", (req, res) => {
         .json({ success: false, message: "Could not fetch user data" })
     );
 });
+
+
+router.post(
+  "/test",
+  async (req, res) => {
+    try {
+
+      const oldMentors = await Mentor.find();
+
+      for (let i = 0; i < oldMentors.length; i++) {
+        oldMentors[i].email = "charbel.helou.98@gmail.com";
+        oldMentors[i].show = true;
+        var updatedMentor = await oldMentors[i].save();
+      }
+
+      //const updatedMentor = await oldMentor.save();
+      res.json({ success: true });
+    } catch (err) {
+      console.log(err)
+      res
+        .status(404)
+        .json({ success: false, message: err });
+    }
+  }
+);
+
+
+router.put(
+  "/show/:id",
+  async (req, res) => {
+    try {
+
+      const oldMentor = await Mentor.findById(req.params.id);
+      oldMentor.show = req.body.show;
+      var updatedMentor = await oldMentor.save();
+
+
+      //const updatedMentor = await oldMentor.save();
+      res.json({ success: true });
+    } catch (err) {
+      console.log(err)
+      res
+        .status(404)
+        .json({ success: false, message: err });
+    }
+  }
+);
 
 
 module.exports = router;

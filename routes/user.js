@@ -81,9 +81,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-function capitalize(word) {
-  return word[0].toUpperCase + word.slice(1).toLowerCase();
-}
 
 // @route   POST /user/register
 // @desc    Register user
@@ -115,9 +112,10 @@ router.post(
           from: "mentorpack.contact@gmail.com", // sender address
           to: newUser.email, // list of receivers
           subject: "Welcome to MentorPack", // Subject line
-          html: '<h2>Welcome ' + newUser.name + ' ! </h2><p>You are successfully registered !</p>'+ 
-          '<p>Please find below the link to our secured platform to submit your resume: '+
-          '<a href="https://mentor-pack.com/upload/'+ newUser.id+ '">Click Here</a></p>'
+          html: '<h2>Welcome ' + newUser.name + ' ! </h2><p>You are successfully registered !</p>' +
+            '<p>Please find below the link to our secured platform to submit your resume: ' +
+            '<a href="https://mentor-pack.com/upload/' + newUser.id + '">Here</a></p>' +
+            '<p>MentorPack Team</p>'
         }).then(info => {
           console.log({ info });
         }).catch(console.error);
@@ -184,7 +182,7 @@ router.post("/login", (req, res) => {
   });
 });
 /*------------------------------------------------------------------------------------------*/
-router.get("/all", verifyToken, (req, res) => {
+router.get("/all", (req, res) => {
   User.find({}).then((users) => {
     res.json({
       users: users,
@@ -282,7 +280,7 @@ router.post(
           from: "mentorpack.contact@gmail.com", // sender address
           to: oldUser.email, // list of receivers
           subject: "Resume well recieved", // Subject line
-          html: '<h2>Hello ' + oldUser.name + ' ! </h2><p>You are successfully registered !</p> <p>We have successfully recieved your resume and we will start looking at your profile to find you the best match</p>'// plain text body
+          html: '<h2>Hello ' + oldUser.name.split(" ")[0] + ' ! </h2><p>You are successfully registered !</p> <p>We have successfully recieved your resume and we will start looking at your profile to find you the best match</p>'// plain text body
         }).then(info => {
           console.log({ info });
         }).catch(console.error);
@@ -300,7 +298,39 @@ router.post(
   }
 );
 
+router.post(
+  "/assign",
+  async (req, res) => {
+    try {
+      const oldUser = await User.findById(req.body.userId);
+      const mentor = await Mentor.findById(req.body.mentor);
 
+      oldUser.mentors = [req.body.mentor];
+
+      const updatedUser = await oldUser.save();
+
+      const nameMentor = mentor.name.split(" ");
+      const nameUser = oldUser.name.split(" ");
+      
+      transporter.sendMail({
+        from: "mentorpack.contact@gmail.com", // sender address
+        to: mentor.email, // list of receivers
+        subject: "You have a new Mentee", // Subject line
+        html: '<h2>Hello ' + nameMentor[0] + ' ! </h2><p> You have been assigned a new Mentee.</p>'+
+        '<p>Meet '+  nameUser[0] +' : </p>'+
+        '<p> Studying '+ oldUser.major.toLowerCase() +' at '+ oldUser.university.toUpperCase() +'</p>'
+      }).then(info => {
+        console.log({ info });
+      }).catch(console.error);
+      res.json({ success: true, user: updatedUser });
+    } catch (err) {
+      console.log(err);
+      res
+        .status(404)
+        .json({ success: false, message: "Failed to upload resume" });
+    }
+  }
+);
 
 
 
