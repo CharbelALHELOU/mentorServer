@@ -10,7 +10,7 @@ const mentorSchema = new Schema(
     linkedinUrl: { type: String },
     imageUrl: { type: String },
     description : {type : String},
-    show : { type: Boolean},
+    show : { type: Boolean, default : true},
     category: { type: Schema.Types.ObjectId, ref: "Category" },
   },
   { timestamps: true }
