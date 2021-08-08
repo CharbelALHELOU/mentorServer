@@ -341,7 +341,7 @@ router.post(
 
 
 
-router.delete("/:id", verifyToken, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     const removeMentor = await mentor.remove();
