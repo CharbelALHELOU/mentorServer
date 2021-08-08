@@ -345,7 +345,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     const removeMentor = await mentor.remove();
-    res.json({ success: true, message: name + " was deleted" });
+    res.json({ success: true, message: user.name + " was deleted" });
   } catch {
     res
       .status(404)
