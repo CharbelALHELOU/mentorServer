@@ -280,7 +280,7 @@ router.post(
           from: "contact@mentor-pack.com", // sender address
           to: oldUser.email, // list of receivers
           subject: "MentorPack - Resume well recieved", // Subject line
-          html: '<h2>Hello ' + oldUser.name.split(" ")[0] + ' ! </h2><p>You are successfully registered !</p> <p>We have successfully recieved your resume and we will start looking at your profile to find you the best match</p>'// plain text body
+          html: '<h2>Hello ' + oldUser.name.split(" ")[0] + ' ! </h2><p>We have successfully recieved your resume and we will start examining your profile to find you the best match</p>' + '<p>MentorPack Team</p>'// plain text body
         }).then(info => {
           console.log({ info });
         }).catch(console.error);
@@ -311,14 +311,17 @@ router.post(
 
       const nameMentor = mentor.name.split(" ");
       const nameUser = oldUser.name.split(" ");
-      
+
       transporter.sendMail({
         from: "contact@mentor-pack.com", // sender address
         to: mentor.email,// list of receivers
         subject: "MentorPack - You have a new Mentee", // Subject line
-        html: '<h2>Hello ' + nameMentor[0] + ' ! </h2><p> You have been assigned a new Mentee.</p>'+
-        '<p>Meet '+  nameUser[0] +' : </p>'+
-        '<p> Studying '+ oldUser.major.toLowerCase() +' at '+ oldUser.university.toUpperCase() +'</p>'
+        html: '<h2>Hello ' + nameMentor[0] + ' ! </h2><p> You have been assigned a new Mentee.</p>' +
+          '<p>Meet ' + nameUser[0] + ' : </p>' +
+          '<p> - ' + oldUser.major.toLowerCase() + ' -- ' + oldUser.university.toUpperCase() + '</p>' +
+          '<p> - Email : ' + oldUser.email + '</p>' +
+          '<p> - Resume : ' + '<a href="' + oldUser.resumeUrl + '">Click Here</a></p>'
+          + '<p>MentorPack Team</p>'
       }).then(info => {
         console.log({ info });
       }).catch(console.error);
