@@ -352,7 +352,7 @@ router.post(
 
 
 router.put(
-  "/show/:id",
+  "/show/:id", verifyToken,
   async (req, res) => {
     try {
 

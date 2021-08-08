@@ -182,7 +182,7 @@ router.post("/login", (req, res) => {
   });
 });
 /*------------------------------------------------------------------------------------------*/
-router.get("/all", (req, res) => {
+router.get("/all", verifyToken, (req, res) => {
   User.find({}).then((users) => {
     res.json({
       users: users,
@@ -299,7 +299,7 @@ router.post(
 );
 
 router.post(
-  "/assign",
+  "/assign", verifyToken,
   async (req, res) => {
     try {
       const oldUser = await User.findById(req.body.userId);
@@ -341,7 +341,7 @@ router.post(
 
 
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     const removeuser = await user.remove();
