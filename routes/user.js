@@ -344,12 +344,12 @@ router.post(
 router.delete("/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    const removeMentor = await mentor.remove();
+    const removeuser = await user.remove();
     res.json({ success: true, message: user.name + " was deleted" });
   } catch {
     res
       .status(404)
-      .json({ success: false, message: "Failed to delete mentor" });
+      .json({ success: false, message: "Failed to delete user" });
   }
 });
 
