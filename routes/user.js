@@ -279,7 +279,7 @@ router.post(
         transporter.sendMail({
           from: "contact@mentor-pack.com", // sender address
           to: oldUser.email, // list of receivers
-          subject: "Resume well recieved", // Subject line
+          subject: "MentorPack - Resume well recieved", // Subject line
           html: '<h2>Hello ' + oldUser.name.split(" ")[0] + ' ! </h2><p>You are successfully registered !</p> <p>We have successfully recieved your resume and we will start looking at your profile to find you the best match</p>'// plain text body
         }).then(info => {
           console.log({ info });
@@ -315,7 +315,7 @@ router.post(
       transporter.sendMail({
         from: "contact@mentor-pack.com", // sender address
         to: mentor.email,// list of receivers
-        subject: "You have a new Mentee", // Subject line
+        subject: "MentorPack - You have a new Mentee", // Subject line
         html: '<h2>Hello ' + nameMentor[0] + ' ! </h2><p> You have been assigned a new Mentee.</p>'+
         '<p>Meet '+  nameUser[0] +' : </p>'+
         '<p> Studying '+ oldUser.major.toLowerCase() +' at '+ oldUser.university.toUpperCase() +'</p>'
