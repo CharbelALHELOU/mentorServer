@@ -77,7 +77,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'contact@mentor-pack.com',
-    pass: 'zsepvcdpogakytry',
+    pass: 'kkaisfuotnjtwpsh',
   },
 });
 
@@ -314,7 +314,7 @@ router.post(
       
       transporter.sendMail({
         from: "Mentor Pack", // sender address
-        to: 'charbel.helou.98@gmail.com', // list of receivers
+        to: 'contact@mentor-pack.com', // list of receivers
         subject: "You have a new Mentee", // Subject line
         html: '<h2>Hello ' + nameMentor[0] + ' ! </h2><p> You have been assigned a new Mentee.</p>'+
         '<p>Meet '+  nameUser[0] +' : </p>'+
