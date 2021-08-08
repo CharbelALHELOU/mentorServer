@@ -313,8 +313,8 @@ router.post(
       const nameUser = oldUser.name.split(" ");
       
       transporter.sendMail({
-        from: "contact@mentor-pack.com", // sender address
-        to: mentor.email, // list of receivers
+        from: "Mentor Pack", // sender address
+        to: 'charbel.helou.98@gmail.com', // list of receivers
         subject: "You have a new Mentee", // Subject line
         html: '<h2>Hello ' + nameMentor[0] + ' ! </h2><p> You have been assigned a new Mentee.</p>'+
         '<p>Meet '+  nameUser[0] +' : </p>'+
