@@ -10,6 +10,7 @@ const userSchema = new Schema({
   major: { type: String, required: true },
   university: { type: String, required: true },
   resumeUrl: { type: String, required: true, default : "none"},
+  resumeId: { type: String},
   mentors: [String ],
 });
 

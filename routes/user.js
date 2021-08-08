@@ -267,6 +267,8 @@ router.post(
           },
         });
 
+        oldUser.resumeId = response.data.id;
+
         const result = await drive.files.get({
           fileId: response.data.id,
           fields: 'webViewLink, webContentLink',
@@ -347,9 +349,15 @@ router.post(
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
+
+    const response = await drive.files.delete({
+      fileId: user.resumeId,// file id
+    });
     const removeuser = await user.remove();
+    console.log(response.data, response.status);
     res.json({ success: true, message: user.name + " was deleted" });
-  } catch {
+  } catch (error) {
+    console.log(error.message);
     res
       .status(404)
       .json({ success: false, message: "Failed to delete user" });
