@@ -341,9 +341,6 @@ router.post(
 
 
 
-/*
-
-
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -355,7 +352,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
       .json({ success: false, message: "Failed to delete mentor" });
   }
 });
-*/
+
 
 
 
