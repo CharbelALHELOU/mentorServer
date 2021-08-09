@@ -349,10 +349,11 @@ router.post(
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-
-    const response = await drive.files.delete({
-      fileId: user.resumeId,// file id
-    });
+    if (user.resumeUrl != "none"){
+      const response = await drive.files.delete({
+        fileId: user.resumeId,// file id
+      });
+    }
     const removeuser = await user.remove();
     console.log(response.data, response.status);
     res.json({ success: true, message: "Deleted" });
