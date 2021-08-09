@@ -355,7 +355,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
     });
     const removeuser = await user.remove();
     console.log(response.data, response.status);
-    res.json({ success: true, message: user.name + " was deleted" });
+    res.json({ success: true, message: "Deleted" });
   } catch (error) {
     console.log(error.message);
     res
