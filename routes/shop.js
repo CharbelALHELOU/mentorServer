@@ -56,20 +56,6 @@ function verifyToken(req, res, next) {
 
 //----------------------------------Routes----------------------------------//
 
-// @route   GET /shop/info
-// @desc    Get mentors and orders info
-// @access  Public
-router.get("/info", async (req, res) => {
-  try {
-    let mentorsTotal = await Mentor.find().count();
-    let ordersTotal = await Order.find().count();
-    res.json({ success: true, mentorsTotal, ordersTotal });
-  } catch {
-    res
-      .status(404)
-      .json({ success: false, message: "Failed to retrive information" });
-  }
-});
 
 // @route   GET /shop/mentors
 // @desc    Get mentors
@@ -212,70 +198,6 @@ router.post(
   }
 );
 
-// @route   PUT /shop/:id
-// @desc    Update mentor
-// @access  Private
-router.put(
-  "/:id",
-  verifyToken,
-  multer({ storage: storage }).single("imageUrl"),
-  async (req, res) => {
-    // Constructing a url to the server
-    const url = req.protocol + "://" + req.get("host");
-    const imageFile = req.file;
-    const newMentorName = req.body.name;
-    const newUniversity = req.body.university;
-    const newPosition = req.body.position;
-    const newDesc = req.body.description;
-    const newLinkedinUrl = req.body.linkedinUrl;
-    const newCategoryName = req.body.category;
-    try {
-      const oldMentor = await Mentor.findById(req.params.id);
-      const oldCategory = await Category.findById(oldMentor.category);
-      if (newCategoryName !== oldCategory.cat_name) {
-        const newCategory = await Category.findOne({
-          cat_name: newCategoryName,
-        });
-        newCategory.mentors.push(oldMentor._id);
-        const updatedNewCategory = await newCategory.save();
-        const removeIndex = oldCategory.mentors.indexOf(req.params.id);
-        oldCategory.mentors.splice(removeIndex, 1);
-        const updatedOldCategory = await oldCategory.save();
-        oldMentor.category = newCategory._id;
-      }
-      oldImageName = oldMentor.name;
-      let oldPath = oldMentor.imageUrl.split(url).pop();
-      if (imageFile) {
-        fs.unlink("." + oldPath, (err) => {
-          if (err)
-            return res
-              .status(400)
-              .json({ success: false, message: "Failed to delete image file" });
-        });
-        oldMentor.imageUrl = url + "/images/" + imageFile.filename;
-      }
-      oldMentor.name = newMentorName ? newMentorName : oldMentor.name;
-      oldMentor.description = newDesc
-        ? newDesc
-        : oldMentor.description;
-      oldMentor.university = newUniversity
-        ? newUniversity
-        : oldMentor.university;
-      oldMentor.position = newPosition
-        ? newPosition
-        : oldMentor.position;
-      oldMentor.linkedinUrl = newLinkedinUrl
-        ? newLinkedinUrl
-        : oldMentor.linkedinUrl;
-      const updatedMentor = await oldMentor.save();
-      res.json({ success: true, mentor: updatedMentor });
-    } catch (err) {
-      res
-        .status(404)
-        .json({ success: false, message: "Failed to update mentor" });
-    }
-  }
-);
 
 // @route   DELETE /shop/:id
 // @desc    Delete mentor
@@ -308,24 +230,8 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
-router.get("/current", (req, res) => {
-  console.log(req.query.userId);
-  User.findById(req.query.userId)
-    .then((user) =>
-      Order.find()
-        .where("user.userId")
-        .equals(req.userId)
-        .sort({ updatedAt: -1 })
-        .then((orders) => res.json({ success: true, user, orders }))
-    )
-    .catch((err) =>
-      res
-        .status(404)
-        .json({ success: false, message: "Could not fetch user data" })
-    );
-});
 
-
+/*
 router.post(
   "/test",
   async (req, res) => {
@@ -348,7 +254,7 @@ router.post(
         .json({ success: false, message: err });
     }
   }
-);
+);*/
 
 
 router.put(
