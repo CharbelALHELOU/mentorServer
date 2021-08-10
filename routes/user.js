@@ -368,8 +368,8 @@ router.post("/emailMentors", (req, res) => {
           subject: "MentorPack - " + req.body.subject, // Subject line
           html: req.body.text
         }).then(info => {
-          console.log("Sent to" + mentors[i].name);
-        }).catch(console.log("error"));
+          console.log("Sent to "+i+"/"+mentors.length+" - " + mentors[i].name);
+        }).catch((err) => console.log(err));
       }
       res.send("done");
     })
