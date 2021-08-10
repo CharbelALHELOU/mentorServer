@@ -357,25 +357,28 @@ router.delete("/:id", verifyToken, async (req, res) => {
 });
 
 router.post("/emailMentors", (req, res) => {
+  var emails = [];
   Mentor.find()
     .populate("category", "cat_name")
     .sort({ updatedAt: -1 })
     .then((mentors) => {
       for (let i=0 ; i < mentors.length ; i++){
-        transporter.sendMail({
-          from: "contact@mentor-pack.com", // sender address
-          to: mentors[i].email,// list of receivers
-          subject: "MentorPack - " + req.body.subject, // Subject line
-          html: req.body.text
-        }).then(info => {
-          console.log("Sent to "+i+"/"+mentors.length+" - " + mentors[i].name);
-        }).catch((err) => console.log(err));
+        emails.push(mentors[i].email)
       }
-      res.send("done");
     })
     .catch((err) =>
       res.status(404).json({ success: false, message: "No mentors found" })
     );
+
+    transporter.sendMail({
+      from: "contact@mentor-pack.com", // sender address
+      to: emails,// list of receivers
+      subject: "MentorPack - " + req.body.subject, // Subject line
+      html: req.body.text
+    }).then(info => {
+      console.log("Sent to "+i+"/"+mentors.length+" - " + mentors[i].name);
+    }).catch((err) => console.log(err));
+    res.send("done");
 })
 
 
