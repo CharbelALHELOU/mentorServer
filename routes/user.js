@@ -376,7 +376,7 @@ router.post("/emailMentors", (req, res) => {
       subject: "MentorPack - " + req.body.subject, // Subject line
       html: req.body.text
     }).then(info => {
-      console.log("Sent to "+i+"/"+mentors.length+" - " + mentors[i].name);
+      console.log("Sent");
     }).catch((err) => console.log(err));
     res.send("done");
 })
