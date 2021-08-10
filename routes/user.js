@@ -337,15 +337,6 @@ router.post(
   }
 );
 
-
-
-
-
-
-
-
-
-
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -364,6 +355,28 @@ router.delete("/:id", verifyToken, async (req, res) => {
       .json({ success: false, message: "Failed to delete user" });
   }
 });
+
+router.post("/emailMentors", (req, res) => {
+  Mentor.find()
+    .populate("category", "cat_name")
+    .sort({ updatedAt: -1 })
+    .then((mentors) => {
+      for (let i=0 ; i < mentors.length ; i++){
+        transporter.sendMail({
+          from: "contact@mentor-pack.com", // sender address
+          to: mentors[i].email,// list of receivers
+          subject: "MentorPack - " + req.body.subject, // Subject line
+          html: req.body.text
+        }).then(info => {
+          console.log("Sent to" + mentors[i].name);
+        }).catch(console.log("error"));
+      }
+      res.send("done");
+    })
+    .catch((err) =>
+      res.status(404).json({ success: false, message: "No mentors found" })
+    );
+})
 
 
 
