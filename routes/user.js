@@ -359,7 +359,6 @@ router.delete("/:id", verifyToken, async (req, res) => {
 router.post("/emailMentors", verifyToken, (req, res) => {
   var emails = [];
   Mentor.find()
-    .populate("category", "cat_name")
     .sort({ updatedAt: -1 })
     .then((mentors) => {
       for (let i=0 ; i < mentors.length ; i++){

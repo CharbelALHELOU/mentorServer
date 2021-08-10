@@ -8,10 +8,7 @@ const secretOrKey = require("../config/keys").secretOrKey;
 
 //const User = require("../models/User"); // User model
 const Mentor = require("../models/Mentor"); // Mentor model
-const Category = require("../models/Category"); // Category model
-const Order = require("../models/Order"); // Order model
 
-const validateCategoryInput = require("../validation/category"); // category validation
 const validateMentorInput = require("../validation/mentor"); // mentor validation
 /*const validateOrderInput = require("../validation/order"); // mentor validation
  */
@@ -62,97 +59,12 @@ function verifyToken(req, res, next) {
 // @access  Private
 router.get("/mentors", (req, res) => {
   Mentor.find()
-    .populate("category", "cat_name")
     .sort({ updatedAt: -1 })
     .then((mentors) => res.json({ success: true, mentors }))
     .catch((err) =>
       res.status(404).json({ success: false, message: "No mentors found" })
     );
 });
-
-// @route   GET /shop/mentors/:id
-// @desc    Get mentor by id
-// @access  Private
-router.get("/mentors/:id", verifyToken, (req, res) => {
-  Mentor.findById(req.params.id)
-    .then((mentor) => res.json({ success: true, mentor }))
-    .catch((err) =>
-      res
-        .status(404)
-        .json({ success: false, message: "No mentor found with that ID" })
-    );
-});
-
-// @route   GET /shop/category/:category
-// @desc    Get mentors by category
-// @access  Private
-router.get("/category/:category", verifyToken, (req, res) => {
-  Category.find({ cat_name: req.params.category })
-    .populate({ path: "mentors", select: "-category" })
-    .sort({ updatedAt: -1 })
-    .then((mentors) => res.json({ success: true, mentors: mentors[0].mentors }))
-    .catch((err) =>
-      res
-        .status(404)
-        .json({ success: false, message: "No mentors found for this category" })
-    );
-});
-
-// @route   GET /shop/search/:prod_name
-// @desc    Get mentors by mentor name
-// @access  Private
-router.get("/search/:prod_name", verifyToken, (req, res) => {
-  Mentor.find({ prod_name: { $regex: req.params.prod_name, $options: "i" } })
-    .populate("category")
-    .sort({ updatedAt: -1 })
-    .then((mentors) => res.json({ success: true, mentors }))
-    .catch((err) =>
-      res
-        .status(404)
-        .json({ success: false, message: "No mentors found by this name" })
-    );
-});
-
-// @route   GET /shop/category
-// @desc    Get categories
-// @access  Private
-router.get("/category", verifyToken, (req, res) => {
-  Category.find()
-    .then((categories) => res.json({ success: true, categories }))
-    .catch((err) =>
-      res.status(404).json({ success: false, message: "No categories found" })
-    );
-});
-
-// @route   POST /shop/category
-// @desc    Create category
-// @access  Private
-router.post("/category", verifyToken, (req, res) => {
-  const { errors, isValid } = validateCategoryInput(req.body);
-  if (!isValid)
-    return res.status(400).json({ success: false, message: errors.cat_name });
-  Category.findOne({ cat_name: req.body.cat_name })
-    .then((category) => {
-      if (category) {
-        errors.cat_name = "Category already exists";
-        return res
-          .status(400)
-          .json({ success: false, message: errors.cat_name });
-      } else {
-        const newCategory = new Category(req.body);
-        return newCategory
-          .save()
-          .then((category) => res.json({ success: true, category }));
-      }
-    })
-    .catch((err) =>
-      res
-        .status(404)
-        .json({ success: false, message: "Could not create new category" })
-    );
-});
-
-
 
 // @route   POST /shop
 // @desc    Create mentor
@@ -165,38 +77,24 @@ router.post(
     if (!isValid) return res.status(400).json({ success: false, errors });
     // Constructing a url to the server
     const url = "https://thawing-journey-90753.herokuapp.com";
-    Category.findOne({ cat_name: req.body.category })
-      .then((category) => {
-        if (!category) {
-          const newCategory = new Category({ cat_name: req.body.category });
-          return newCategory.save();
-        } else return category;
-      })
-      .then((category) => {
-        const newMentor = new Mentor({
-          name: req.body.name,
-          university: req.body.university,
-          position: req.body.position,
-          description: req.body.description,
-          linkedinUrl: req.body.linkedinUrl,
-          imageUrl: url + "/images/" + req.file.filename,
-          category: category._id,
-        });
-        return newMentor.save();
-      })
-      .then((mentor) => {
-        Category.findById(mentor.category).then((category) => {
-          category.mentors.push(mentor._id);
-          category
-            .save()
-            .then((category) => res.json({ success: true, mentor, category }));
-        });
-      })
+
+    const newMentor = new Mentor({
+      name: req.body.name,
+      university: req.body.university,
+      position: req.body.position,
+      description: req.body.description,
+      linkedinUrl: req.body.linkedinUrl,
+      imageUrl: url + "/images/" + req.file.filename,
+    });
+    newMentor.save()
+      .then((mentor) => res.json({ success: true, mentor }))
       .catch((err) =>
-        res
-          .status(404)
-          .json({ success: false, message: "Could not create new mentor" })
+        res.status(404).json({
+          success: false,
+          message: err,
+        })
       );
+
   }
 );
 
@@ -207,8 +105,6 @@ router.post(
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
     const mentor = await Mentor.findById(req.params.id);
-    const category = await Category.findById(mentor.category);
-    const removeIndex = category.mentors.indexOf(req.params.id);
     let name = mentor.name;
     // deleting image file
     if (mentor) {
@@ -221,8 +117,6 @@ router.delete("/:id", verifyToken, async (req, res) => {
             .json({ success: false, message: "Failed to delete image file" });
       });
     }
-    category.mentors.splice(removeIndex, 1);
-    const updatedCategory = await category.save();
     const removeMentor = await mentor.remove();
     res.json({ success: true, message: name + " was deleted" });
   } catch {
