@@ -369,7 +369,7 @@ router.post("/emailMentors", (req, res) => {
     .catch((err) =>
       res.status(404).json({ success: false, message: "No mentors found" })
     );
-
+    console.log(emails);
     transporter.sendMail({
       from: "contact@mentor-pack.com", // sender address
       to: emails,// list of receivers
