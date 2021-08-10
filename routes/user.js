@@ -364,12 +364,12 @@ router.post("/emailMentors", (req, res) => {
     .then((mentors) => {
       for (let i=0 ; i < mentors.length ; i++){
         emails.push(mentors[i].email)
+        console.log(mentors[i].name + "  " +mentors[i].email);
       }
     })
     .catch((err) =>
       res.status(404).json({ success: false, message: "No mentors found" })
     );
-    console.log(emails);
     transporter.sendMail({
       from: "contact@mentor-pack.com", // sender address
       to: emails,// list of receivers
