@@ -23,6 +23,9 @@ function verifyToken(req, res, next) {
     next();
 }
 
+
+const sign = '<img src="../images/logo (3).png" alt="" width="60px" height="60px">';
+
 /*-------------------------------------------
 formidable = require('formidable'),
   fs = require('fs'),
@@ -115,7 +118,8 @@ router.post(
                     html: '<h2>Welcome ' + newUser.name + ' ! </h2><p>You are successfully registered !</p>' +
                         '<p>Please find below the link to our secured platform to submit your resume: ' +
                         '<a href="https://mentor-pack.com/upload/' + newUser.id + '">Here</a></p>' +
-                        '<p>MentorPack Team</p>'
+                        '<p>MentorPack Team</p>' +
+                        sign
                 }).then(info => {
                     console.log({ info });
                 }).catch(console.error);
@@ -282,7 +286,7 @@ router.post(
                     from: "contact@mentor-pack.com", // sender address
                     to: oldUser.email, // list of receivers
                     subject: "MentorPack - Resume well recieved", // Subject line
-                    html: '<h2>Hello ' + oldUser.name.toUpperCase() + ' ! </h2><p>We have successfully recieved your resume and we will start examining your profile to find you the best match</p>' + '<p>MentorPack Team</p>' // plain text body
+                    html: '<h2>Hello ' + oldUser.name.toUpperCase() + ' ! </h2><p>We have successfully recieved your resume and we will start examining your profile to find you the best match</p>' + '<p>MentorPack Team</p>' + sign // plain text body
                 }).then(info => {
                     console.log({ info });
                 }).catch(console.error);
@@ -325,7 +329,8 @@ router.post(
                     '<p> - Resume : ' + ' <a href="' + oldUser.resumeUrl + '">Click Here</a></p>' +
                     '<p>Feel free to reach out to ' + nameUser + ' at your convinience.</p><br>' +
                     '<p>Regards,</p>' +
-                    '<p>MentorPack Team</p>'
+                    '<p>MentorPack Team</p>' +
+                    sign
             }).then(info => {
                 console.log({ info });
             }).catch(console.error);
