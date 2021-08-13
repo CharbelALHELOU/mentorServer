@@ -380,7 +380,7 @@ router.post("/emailMentors", verifyToken, (req, res) => {
         from: "contact@mentor-pack.com", // sender address
         to: emails, // list of receivers
         subject: "MentorPack - " + req.body.subject, // Subject line
-        html: req.body.text
+        html: req.body.text + '<br><p>MentorPack Team</p>' + sign
     }).then(info => {
         console.log("Sent");
     }).catch((err) => console.log(err));
