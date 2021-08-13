@@ -24,7 +24,7 @@ function verifyToken(req, res, next) {
 }
 
 
-const sign = '<img src="../images/logo (3).png" alt="" width="60px" height="60px">';
+const sign = '<img src="https://drive.google.com/file/d/1tbnw5nMS9nU467cWiZhkDNfeO04XaNzn/view?usp=drivesdk" alt="" width="60px" height="60px">';
 
 /*-------------------------------------------
 formidable = require('formidable'),
@@ -321,7 +321,7 @@ router.post(
                 from: "contact@mentor-pack.com", // sender address
                 to: mentor.email, // list of receivers
                 subject: "MentorPack - You have a new Mentee", // Subject line
-                html: '<p>Dear ' + nameMentor + ' ! </p><p>I hope you are doing well</p><p>We are deligheted to see that you agreed to take part in our mentorship program.</p><p>We are happy to inform you that you have been assigned <b>' + nameUser + '</b> as a mentee.</p>' +
+                html: '<p>Dear ' + nameMentor + ' ! </p><p>We hope you are doing well</p><p>We are deligheted to see that you agreed to take part in our mentorship program.</p><p>We are happy to inform you that you have been assigned <b>' + nameUser + '</b> as a mentee.</p>' +
                     "<p>Please find below your new mentee's background informations and CV.</p>" +
                     '<p> - Major : ' + oldUser.major.toLowerCase() + '</p>' +
                     '<p> - University : ' + oldUser.university.toUpperCase() + '</p>' +
