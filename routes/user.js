@@ -115,9 +115,11 @@ router.post(
                     from: "contact@mentor-pack.com", // sender address
                     to: newUser.email, // list of receivers
                     subject: "Welcome to MentorPack", // Subject line
-                    html: '<h2>Welcome ' + newUser.name + ' ! </h2><p>You are successfully registered !</p>' +
-                        '<p>Please find below the link to our secured platform to submit your resume: ' +
+                    html: '<p>Dear ' + newUser.name + ' ! </p><p>We would like to inform you that you have successfully registered as a mentee.' +
+                        '<p>In order to complete your registration please submit your CV on this link: ' +
                         '<a href="https://mentor-pack.com/upload/' + newUser.id + '">Here</a></p>' +
+                        '<br><p>Please feel free to reply if you have any question.</p>' +
+                        '<p>Best regards,' +
                         '<p>MentorPack Team</p>' +
                         sign
                 }).then(info => {
@@ -286,7 +288,7 @@ router.post(
                     from: "contact@mentor-pack.com", // sender address
                     to: oldUser.email, // list of receivers
                     subject: "MentorPack - Resume well recieved", // Subject line
-                    html: '<h2>Hello ' + oldUser.name.toUpperCase() + ' ! </h2><p>We have successfully recieved your resume and we will start examining your profile to find you the best match</p>' + '<p>MentorPack Team</p>' + sign // plain text body
+                    html: '<p>Dear ' + oldUser.name.toUpperCase() + ' ! </p><p>We have successfully recieved your resume and we will start examining your profile to find you the best match</p>' + '<br><p>Please feel free to reply if you have any question.</p>' + '<p>MentorPack Team</p>' + sign // plain text body
                 }).then(info => {
                     console.log({ info });
                 }).catch(console.error);
@@ -321,13 +323,14 @@ router.post(
                 from: "contact@mentor-pack.com", // sender address
                 to: mentor.email, // list of receivers
                 subject: "MentorPack - You have a new Mentee", // Subject line
-                html: '<p>Dear ' + nameMentor + ' ! </p><p>We hope you are doing well</p><p>We are deligheted to see that you agreed to take part in our mentorship program.</p><p>We are happy to inform you that you have been assigned <b>' + nameUser + '</b> as a mentee.</p>' +
+                html: '<p>Dear ' + nameMentor + ', </p><p>We hope you are doing well.</p><p>We are delighted to see that you agreed to take part in our mentorship program.</p><p>We are happy to inform you that you have been assigned <b>' + nameUser + '</b> as a mentee.</p>' +
                     "<p>Please find below your new mentee's background informations and CV.</p>" +
                     '<p> - Major : ' + oldUser.major.toLowerCase() + '</p>' +
                     '<p> - University : ' + oldUser.university.toUpperCase() + '</p>' +
                     '<p> - Email : ' + oldUser.email + '</p>' +
                     '<p> - Resume : ' + ' <a href="' + oldUser.resumeUrl + '">Click Here</a></p>' +
                     '<p>Feel free to reach out to ' + nameUser + ' at your convinience.</p><br>' +
+                    '<br><p>Please feel free to reply if you have any question.</p>' +
                     '<p>Regards,</p>' +
                     '<p>MentorPack Team</p>' +
                     sign
@@ -384,6 +387,36 @@ router.post("/emailMentors", verifyToken, (req, res) => {
     }).then(info => {
         console.log("Sent");
     }).catch((err) => console.log(err));
+    res.send("done");
+})
+
+
+router.post("/emailMentees", verifyToken, (req, res) => {
+    User.find()
+        .sort({ updatedAt: -1 })
+        .then((users) => {
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].resumeUrl = "none") {
+                    transporter.sendMail({
+                        from: "mentorpack.contact@gmail.com", // sender address
+                        to: users[i].email, // list of receivers
+                        subject: "MentorPack - Reminder to upload your resume", // Subject line
+                        html: '<p>Dear ' + users[i].name + ', </p><p>We hope you are doing well.</p><p>We are delighted to see that you agreed to take part in our mentorship program.</p>' +
+                            'We would like to remind you that in order for us to assign you a mentor you need to upload your resume at : <a href="https://mentor-pack.com/upload/' + users[i].id + '">Here</a></p>' +
+                            '<br><p>Please feel free to reply if you have any question.</p>' +
+                            '<br><p>Regards,</p>' +
+                            '<p>MentorPack Team</p>' +
+                            sign
+                    }).then(info => {
+                        console.log("Sent");
+                    }).catch((err) => console.log(err));
+                    console.log(users[i].name + "  " + users[i].email);
+                }
+            }
+        })
+        .catch((err) =>
+            res.status(404).json({ success: false, message: "No mentors found" })
+        );
     res.send("done");
 })
 
