@@ -317,12 +317,12 @@ router.post(
                 from: "contact@mentor-pack.com", // sender address
                 to: mentor.email, // list of receivers
                 subject: "MentorPack - You have a new Mentee", // Subject line
-                html: '<h2>Dear ' + nameMentor + ' ! </h2><p>I hope you are doing well</p><p>We are deligheted to see that you agreed to take part in our mentorship program.</p><p>We are happy to inform you that you have been assigned ' + nameUser + ' as a mentee.</p>' +
+                html: '<p>Dear ' + nameMentor + ' ! </p><p>I hope you are doing well</p><p>We are deligheted to see that you agreed to take part in our mentorship program.</p><p>We are happy to inform you that you have been assigned <b>' + nameUser + '</b> as a mentee.</p>' +
                     "<p>Please find below your new mentee's background informations and CV.</p>" +
                     '<p> - Major : ' + oldUser.major.toLowerCase() + '</p>' +
                     '<p> - University : ' + oldUser.university.toUpperCase() + '</p>' +
                     '<p> - Email : ' + oldUser.email + '</p>' +
-                    '<p> - Resume : ' + '<a href="' + oldUser.resumeUrl + '">Click Here</a></p>' +
+                    '<p> - Resume : ' + ' <a href="' + oldUser.resumeUrl + '">Click Here</a></p>' +
                     '<p>Feel free to reach out to ' + nameUser + ' at your convinience.</p><br>' +
                     '<p>Regards,</p>' +
                     '<p>MentorPack Team</p>'
