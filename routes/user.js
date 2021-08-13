@@ -24,7 +24,7 @@ function verifyToken(req, res, next) {
 }
 
 
-const sign = '<img src="https://drive.google.com/file/d/1tbnw5nMS9nU467cWiZhkDNfeO04XaNzn/view?usp=drivesdk" alt="" width="60px" height="60px">';
+const sign = '<img src="https://drive.google.com/uc?export=view&id=1y-Hjshgbjd5I5QivINnijZplQQMdNjxI" alt="" width="60px" height="60px">';
 
 /*-------------------------------------------
 formidable = require('formidable'),
