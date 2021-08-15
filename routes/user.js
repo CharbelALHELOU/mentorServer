@@ -161,6 +161,13 @@ router.post("/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
+    User.find().then((users) => {
+        for (let i = 0; i < users.length; i++) {
+            users[i].assignedMentor = "";
+            const updatedUser = await users[i].save();
+        }
+    })
+
     User.findOne({ email }).then((user) => {
         if (!user) {
             errors.email = "User not found";
@@ -194,11 +201,7 @@ router.post("/login", (req, res) => {
 });
 /*------------------------------------------------------------------------------------------*/
 router.get("/all", verifyToken, (req, res) => {
-    User.find({}).then((users) => {
-        for (let i = 0; i < users.length; i++) {
-            users[i].assignedMentor = "";
-            const updatedUser = await users[i].save();
-        }
+    User.find().then((users) => {
         res.json({
             users: users,
         })
