@@ -317,7 +317,9 @@ router.post(
             const oldUser = await User.findById(req.body.userId);
             const mentor = await Mentor.findById(req.body.mentor);
 
-            oldUser.mentors = oldUser.mentors + [req.body.mentor];
+            var oldMentors = oldUser.mentors;
+
+            oldUser.mentors = oldMentors.push(req.body.mentor);
 
             const updatedUser = await oldUser.save();
 
