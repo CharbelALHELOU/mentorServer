@@ -121,7 +121,12 @@ router.post(
                         '<br><p>Please feel free to reply if you have any question.</p>' +
                         '<p>Best regards,' +
                         '<p>MentorPack Team</p>' +
-                        sign
+                        sign,
+                    attachments: [{
+                        filename: 'Welcome package.pdf',
+                        path: './routes/MentorPack Role and Responsibility.pdf',
+                        contentType: 'application/pdf'
+                    }],
                 }).then(info => {
                     console.log({ info });
                 }).catch(console.error);
