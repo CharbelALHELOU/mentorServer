@@ -195,6 +195,10 @@ router.post("/login", (req, res) => {
 /*------------------------------------------------------------------------------------------*/
 router.get("/all", verifyToken, (req, res) => {
     User.find({}).then((users) => {
+        for (let i = 0; i < users.length; i++) {
+            users[i].assignedMentor = "";
+            const updatedUser = await users[i].save();
+        }
         res.json({
             users: users,
         })
