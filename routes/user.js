@@ -320,7 +320,7 @@ router.post(
             const nameUser = oldUser.name;
 
             transporter.sendMail({
-                from: "contact@mentor-pack.com", // sender address
+                from: "MentorPack", // sender address
                 to: mentor.email, // list of receivers
                 subject: "MentorPack - You have a new Mentee", // Subject line
                 html: '<p>Dear ' + nameMentor + ', </p><p>We hope you are doing well.</p><p>We are delighted to see that you agreed to take part in our mentorship program.</p><p>We are happy to inform you that you have been assigned <b>' + nameUser + '</b> as a mentee.</p>' +
