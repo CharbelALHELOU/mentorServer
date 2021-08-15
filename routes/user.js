@@ -193,17 +193,25 @@ router.post("/login", (req, res) => {
     });
 });
 /*------------------------------------------------------------------------------------------*/
-router.get("/all", verifyToken, async(req, res) => {
-    User.find().then((users) => {
-        for (let i = 0; i < users.length; i++) {
-            users[i].assignedMentor = "";
-            const updatedUser = await users[i].save();
+router.get("/all", verifyToken,
+    async(req, res) => {
+        try {
+            User.find().then((users) => {
+                for (let i = 0; i < users.length; i++) {
+                    users[i].assignedMentor = "";
+                    const updatedUser = await users[i].save();
+                }
+                res.json({
+                    users: users,
+                })
+            })
+
+        } catch (err) {
+            res
+                .status(404)
+                .json({ success: false, message: err });
         }
-        res.json({
-            users: users,
-        })
-    })
-});
+    });
 
 
 
