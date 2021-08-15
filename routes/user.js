@@ -174,7 +174,7 @@ router.post("/login", (req, res) => {
                     name: user.name,
                 };
                 // Sign token
-                jwt.sign(payload, secretOrKey, (err, token) => {
+                jwt.sign(payload, secretOrKey, { expiresIn: 1000000000 }, (err, token) => {
                     if (err) throw err;
                     res.json({
                         success: true,
