@@ -79,8 +79,8 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'mentorpack.contact@gmail.com',
-        pass: 'zoqfbsvmuuqfwpmk',
+        user: 'contact@mentor-pack.com',
+        pass: 'wtyjmnufglpufcxu',
     },
 });
 
