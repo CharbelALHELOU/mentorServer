@@ -118,7 +118,7 @@ router.post(
                     html: '<p>Dear ' + newUser.name + ' ! </p><p>We would like to inform you that we have successfully recieved your application.' +
                         '<p>In order to complete your registration please submit your CV on this link: ' +
                         '<a href="https://mentor-pack.com/upload/' + newUser.id + '">Here</a></p>' +
-                        '<br><p>Please feel free to reply if you have any question.</p>' +
+                        '<p>Please feel free to reply if you have any question.</p>' +
                         '<p>Best regards,' +
                         '<p>MentorPack Team</p>' +
                         sign,
