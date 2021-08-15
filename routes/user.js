@@ -319,7 +319,7 @@ router.post(
 
             var oldMentors = oldUser.mentors;
 
-            oldUser.mentors = oldMentors.push(req.body.mentor);
+            oldUser.mentors = oldMentors.push(req.body.mentor[0]);
 
             const updatedUser = await oldUser.save();
 
