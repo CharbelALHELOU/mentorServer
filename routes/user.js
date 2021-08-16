@@ -343,7 +343,7 @@ router.post(
                     '<p> - Email : ' + oldUser.email + '</p>' +
                     '<p> - Resume : ' + ' <a href="' + oldUser.resumeUrl + '">Click Here</a></p><br>' +
                     '<p>If you accept ' + nameUser + ' as a mentee, please reach out to him/her at your convenience and include contact@mentor-pack.com in your email.</p>' +
-                    '<p>Otherwise, let us know by replying to this email.</p>' +
+                    '<p>Otherwise, let us know by replying to this email.</p><br>' +
                     '<p>Best regards,</p>' +
                     '<p>MentorPack Team</p>' +
                     sign
