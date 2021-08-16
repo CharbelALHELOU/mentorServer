@@ -197,7 +197,7 @@ router.get("/all", verifyToken,
     (req, res) => {
         User.find().then((users) => {
             res.json({
-                users: users,
+                users: users
             })
         })
         res
