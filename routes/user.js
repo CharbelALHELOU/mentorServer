@@ -118,12 +118,12 @@ router.post(
                     html: '<p>Dear ' + newUser.name + ' ! </p><p>We would like to inform you that we have successfully recieved your application.' +
                         '<p>In order to complete your registration please submit your CV on this link: ' +
                         '<a href="https://mentor-pack.com/upload/' + newUser.id + '">Here</a></p>' +
-                        '<p>Please feel free to reply if you have any question.</p>' +
+                        '<p>You will find attached a document explaining our program as well as other information to help you make the most of your journey.</p>' +
                         '<p>Best regards,' +
                         '<p>MentorPack Team</p>' +
                         sign,
                     attachments: [{
-                        filename: 'Welcome package.pdf',
+                        filename: 'MentorPack program.pdf',
                         path: './routes/MentorPack Role and Responsibility.pdf',
                         contentType: 'application/pdf'
                     }],
@@ -301,7 +301,7 @@ router.post(
                     from: "contact@mentor-pack.com", // sender address
                     to: oldUser.email, // list of receivers
                     subject: "MentorPack - Resume well recieved", // Subject line
-                    html: '<p>Dear ' + oldUser.name.toUpperCase() + ' ! </p><p>We have successfully recieved your resume and we will start examining your profile to find you the best match</p>' + '<br><p>Please feel free to reply if you have any question.</p>' + '<p>MentorPack Team</p>' + sign // plain text body
+                    html: '<p>Dear ' + oldUser.name.toUpperCase() + ' ! </p><p>We have successfully recieved your resume and we will start examining your profile to find you the best match</p>' + '<br><p>Please feel free to reply if you have any question.</p>' + '<p>Regards,</p>' + '<p>MentorPack Team</p>' + sign // plain text body
                 }).then(info => {
                     console.log({ info });
                 }).catch(console.error);
@@ -344,9 +344,15 @@ router.post(
                     '<p> - Resume : ' + ' <a href="' + oldUser.resumeUrl + '">Click Here</a></p><br>' +
                     '<p>If you accept ' + nameUser + ' as a mentee, please reach out to him/her at your convenience and include contact@mentor-pack.com in your email.</p>' +
                     '<p>Otherwise, let us know by replying to this email.</p><br>' +
+                    '<p>Please find attached a document explaining our program to help you on your journey as a mentor.</p><br>' +
                     '<p>Best regards,</p>' +
                     '<p>MentorPack Team</p>' +
-                    sign
+                    sign,
+                attachments: [{
+                    filename: 'MentorPack program.pdf',
+                    path: './routes/MentorPack Role and Responsibility.pdf',
+                    contentType: 'application/pdf'
+                }],
             }).then(info => {
                 console.log({ info });
             }).catch(console.error);
@@ -378,7 +384,7 @@ router.delete("/:id", verifyToken, async(req, res) => {
             .json({ success: false, message: "Failed to delete user" });
     }
 });
-
+/*
 router.post("/emailMentors", verifyToken, (req, res) => {
     var emails = [];
     Mentor.find()
@@ -433,7 +439,7 @@ router.post("/emailMentees", verifyToken, (req, res) => {
     res.send("done");
 })
 
-
+*/
 
 
 
