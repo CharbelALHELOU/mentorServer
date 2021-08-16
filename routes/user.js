@@ -194,15 +194,19 @@ router.post("/login", (req, res) => {
 });
 /*------------------------------------------------------------------------------------------*/
 router.get("/all", verifyToken,
-    (req, res) => {
-        User.find({}).then((users) => {
-            res.json({
-                users: users
+    async(req, res) => {
+        try {
+            User.find().then((users) => {
+                res.json({
+                    users: users,
+                })
             })
-        })
-        res
-            .status(404)
-            .json({ success: false, message: err });
+
+        } catch (err) {
+            res
+                .status(404)
+                .json({ success: false, message: err });
+        }
     });
 
 
