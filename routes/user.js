@@ -337,13 +337,14 @@ router.post(
                 to: mentor.email, // list of receivers
                 subject: "MentorPack - You have a new Mentee", // Subject line
                 html: '<p>Dear ' + nameMentor + ', </p><p>We hope you are doing well.</p><p>We are delighted to see that you agreed to take part in our mentorship program.</p><p>We are happy to inform you that you have been assigned <b>' + nameUser + '</b> as a mentee.</p>' +
-                    "<p>Please find below your new mentee's background informations and CV.</p>" +
+                    "<p>Find below your new mentee's background information and CV.</p>" +
                     '<p> - Major : ' + oldUser.major.toLowerCase() + '</p>' +
                     '<p> - University : ' + oldUser.university.toUpperCase() + '</p>' +
                     '<p> - Email : ' + oldUser.email + '</p>' +
                     '<p> - Resume : ' + ' <a href="' + oldUser.resumeUrl + '">Click Here</a></p>' +
-                    '<p>Feel free to reach out to ' + nameUser + ' at your convinience.</p><br>' +
-                    '<p>Regards,</p>' +
+                    '<p>If you accept ' + nameUser + ' as a mentee, please reach out to him/her at your convenience and include contact@mentor-pack.com in your email.</p>' +
+                    '<p>Otherwise, let us know by replying to this email.</p>' +
+                    '<p>Best regards,</p>' +
                     '<p>MentorPack Team</p>' +
                     sign
             }).then(info => {
