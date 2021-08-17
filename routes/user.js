@@ -198,6 +198,8 @@ router.get("/all", verifyToken,
     async(req, res) => {
         try {
             User.find().then((users) => {
+                users.splice(this.selected.indexOf('6060bda8d9cf8d0015dfc22e', 0), 1);
+
                 res.json({
                     users: users,
                 })
