@@ -115,7 +115,8 @@ router.post(
                     from: "contact@mentor-pack.com", // sender address
                     to: newUser.email, // list of receivers
                     subject: "Welcome to MentorPack", // Subject line
-                    html: '<p>Dear ' + newUser.name + ' ! </p><p>We would like to inform you that we have successfully recieved your application.' +
+                    html: '<p>Dear ' + newUser.name + '</p><p>We would like to inform you that we have successfully recieved your application.' +
+                        '<p>We are delighted to see that you agreed to take part in our mentorship program.</p>' +
                         '<p>In order to complete your registration please submit your CV on this link: ' +
                         '<a href="https://mentor-pack.com/upload/' + newUser.id + '">Here</a></p>' +
                         '<p>You will find attached a document explaining our program as well as other information to help you make the most of your journey.</p>' +
