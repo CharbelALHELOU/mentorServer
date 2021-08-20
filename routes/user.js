@@ -309,7 +309,9 @@ router.post(
                     from: "contact@mentor-pack.com", // sender address
                     to: oldUser.email, // list of receivers
                     subject: "MentorPack - Resume well recieved", // Subject line
-                    html: '<p>Dear ' + oldUser.name.toUpperCase() + ' ! </p><p>We have successfully recieved your resume and we will start examining your profile to find you the best match</p>' + '<br><p>Please feel free to reply if you have any question.</p>' + '<p>Regards,</p>' + '<p>MentorPack Team</p>' + sign // plain text body
+                    html: '<p>Dear ' + oldUser.name.toUpperCase() +
+                        ',</p><p>We have successfully recieved your resume.</p><p>Your registration is now complete, and you will be contacted as soon as a mentor is assigned to you.</p><p>In the meantime, we recommend going over the pdf you received in our initial email to better understand our program and how to prepare for your meetings with your future mentor.</p>' +
+                        '<p>Please do not hesitate if you have any questions.</p>' + '<p>Best regards,</p>' + '<p>MentorPack Team</p>' + sign // plain text body
                 }).then(info => {
                     console.log({ info });
                 }).catch(console.error);
