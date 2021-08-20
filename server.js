@@ -33,7 +33,7 @@ const transporter = nodemailer.createTransport({
         pass: 'wtyjmnufglpufcxu',
     },
 });
-
+/*
 function logEveryDay(i) {
     setTimeout(() => {
         User.find({ resumeUrl: "none" }).then((usersPending) => {
@@ -44,7 +44,7 @@ function logEveryDay(i) {
             logEveryDay(++i)
         })
     }, 5000)
-}
+}*/
 
 mongoose
     .connect(mongooseURI)
