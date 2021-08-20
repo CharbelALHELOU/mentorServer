@@ -24,7 +24,7 @@ function verifyToken(req, res, next) {
 }
 
 
-const sign = '<img src="https://drive.google.com/uc?export=view&id=1y-Hjshgbjd5I5QivINnijZplQQMdNjxI" alt="" width="60px" height="60px">';
+const sign = '<img src="https://drive.google.com/uc?export=view&id=1y-Hjshgbjd5I5QivINnijZplQQMdNjxI" alt="" style="height: 70px; width: auto;">';
 
 /*-------------------------------------------
 formidable = require('formidable'),
@@ -309,7 +309,7 @@ router.post(
                     from: "contact@mentor-pack.com", // sender address
                     to: oldUser.email, // list of receivers
                     subject: "MentorPack - Resume well recieved", // Subject line
-                    html: '<p>Dear ' + oldUser.name.toUpperCase() +
+                    html: '<p>Dear ' + oldUser.name.toLowerCase() +
                         ',</p><p>We have successfully recieved your resume.</p><p>Your registration is now complete, and you will be contacted as soon as a mentor is assigned to you.</p><p>In the meantime, we recommend going over the pdf you received in our initial email to better understand our program and how to prepare for your meetings with your future mentor.</p>' +
                         '<p>Please do not hesitate if you have any questions.</p>' + '<p>Best regards,</p>' + '<p>MentorPack Team</p>' + sign // plain text body
                 }).then(info => {
