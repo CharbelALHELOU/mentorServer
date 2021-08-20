@@ -13,6 +13,7 @@ const userSchema = new Schema({
     resumeId: { type: String },
     mentors: [String],
     assignedMentor: { type: String, default: "" },
+    createdAt: { type: Date, default: new Date.now() }
 });
 
 module.exports = User = mongoose.model("User", userSchema);
