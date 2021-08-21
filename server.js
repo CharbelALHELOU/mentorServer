@@ -74,7 +74,7 @@ function logEveryDay(i) {
 
                 if (send) {
                     transporter.sendMail({
-                        from: "contact@mentor-pack.com", // sender address
+                        from: '"MentorPack" <contact@mentor-pack.com>', // sender address
                         to: usersPending[j].email, // list of receivers
                         subject: "MentorPack - Reminder to upload your CV", // Subject line
                         html: '<p>Dear ' + usersPending[j].name.toLowerCase() +

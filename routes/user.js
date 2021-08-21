@@ -75,14 +75,16 @@ const { testing } = require("googleapis/build/src/apis/testing");
 const Mentor = require("../models/Mentor");
 const { Console } = require("console");
 const nodemailer = require('nodemailer');
+const smtpTransport = require('nodemailer-smtp-transport');
 
-const transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport(smtpTransport({
     service: 'gmail',
+    host: 'smtp.gmail.com',
     auth: {
         user: 'contact@mentor-pack.com',
         pass: 'wtyjmnufglpufcxu',
     },
-});
+}));
 
 
 // @route   POST /user/register
@@ -108,11 +110,13 @@ router.post(
                     mentors: req.body.mentors,
                     age: req.body.age,
                     major: req.body.major,
-                    university: req.body.university
+                    university: req.body.university,
+                    createdAt: Date.now(),
+                    relance: 0
                 });
                 console.log("user created .... sending email ....");
                 transporter.sendMail({
-                    from: "contact@mentor-pack.com", // sender address
+                    from: '"MentorPack" <contact@mentor-pack.com>', // sender address
                     to: newUser.email, // list of receivers
                     subject: "Welcome to MentorPack", // Subject line
                     html: '<p>Dear ' + newUser.name + '</p><p>We would like to inform you that we have successfully recieved your application.' +
@@ -306,7 +310,7 @@ router.post(
                 const updatedUser = await oldUser.save();
 
                 transporter.sendMail({
-                    from: "contact@mentor-pack.com", // sender address
+                    from: '"MentorPack" <contact@mentor-pack.com>', // sender address
                     to: oldUser.email, // list of receivers
                     subject: "MentorPack - Resume well recieved", // Subject line
                     html: '<p>Dear ' + oldUser.name.toLowerCase() +
@@ -343,7 +347,7 @@ router.post(
             const nameUser = oldUser.name;
 
             transporter.sendMail({
-                from: "contact@mentor-pack.com", // sender address
+                from: '"MentorPack" <contact@mentor-pack.com>', // sender address
                 to: mentor.email, // list of receivers
                 subject: "MentorPack - You have a new Mentee", // Subject line
                 html: '<p>Dear ' + nameMentor + ', </p><p>We hope you are doing well.</p><p>We are delighted to see that you agreed to take part in our mentorship program.</p><p>We are happy to inform you that you have been assigned <b>' + nameUser + '</b> as a mentee.</p>' +
