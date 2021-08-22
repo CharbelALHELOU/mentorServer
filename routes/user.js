@@ -123,8 +123,9 @@ router.post(
                         '<p>We are delighted to see that you agreed to take part in our mentorship program.</p>' +
                         '<p>In order to complete your registration please submit your CV on this link: ' +
                         '<a href="https://mentor-pack.com/upload/' + newUser.id + '">Here</a></p>' +
+                        "<p>In case this link doesn't work do not hesitate to send us your CV by email and report the error.</p>" +
                         '<p>You will find attached a document explaining our program as well as other information to help you make the most of your journey.</p>' +
-                        '<p>Best regards,' +
+                        '<p>Best regards,</p>' +
                         '<p>MentorPack Team</p>' +
                         sign,
                     attachments: [{
@@ -242,7 +243,7 @@ const CLIENT_SECRET = '8J7FrLph6edpSJBERZjcdSVb';
 const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
 
 //refresh token
-const REFRESH_TOKEN = '1//04arF0RsjN8OHCgYIARAAGAQSNwF-L9Irhy126ZDpMXNNoHb-6NcBAIeX6X7_FlCPlAWeFrC5GJ99zjwVtejezUSp6l5oYpmlBjY'
+const REFRESH_TOKEN = '1//045PO_7JU1d8sCgYIARAAGAQSNwF-L9IrEE4IkypzWIZI2xpUV7Zvda1HwQBZ73E2mw80SqKlxwLv_e7pRPTLLSCpYYub00e_Co8'
 
 
 //intialize auth client
