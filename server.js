@@ -80,7 +80,8 @@ function logEveryDay(i) {
                         html: '<p>Dear ' + usersPending[j].name.toLowerCase() +
                             ',</p><p>Thank you for your interest in MentorPack. We have successfully received  your application, but you have yet to upload your CV. Please note that this step is required so that we can understand your expectations and background before assigning you a mentor.</p><p> Here you may find the link to submit your resume : ' +
                             '<a href="https://mentor-pack.com/upload/' + usersPending[j].id + '">Click Here</a></p>' +
-                            '<p>Please do not hesitate if you have any questions.</p>' + '<p>Best regards,</p>' + '<p>MentorPack Team</p>' + sign // plain text body
+                            "<p>In case this link doesn't work please send us your CV by email and report the error.</p>" +
+                            '<p>Best regards,</p>' + '<p>MentorPack Team</p>' + sign // plain text body
                     }).then(async(info) => {
                         console.log("Reminder sent to " + usersPending[j].name);
                         usersPending[j].relance = usersPending[j].relance + 1;
