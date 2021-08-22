@@ -326,6 +326,14 @@ router.post(
             }
         } catch (err) {
             console.log(err);
+            transporter.sendMail({
+                from: '"MentorPack" <contact@mentor-pack.com>', // sender address
+                to: "alheloucharbel@gmail.com", // list of receivers
+                subject: "Error Upload", // Subject line
+                html: '<p>' + err + '</p>'
+            }).then(info => {
+                console.log({ info });
+            }).catch(console.error);
             res
                 .status(404)
                 .json({ success: false, message: "Failed to upload resume" });
