@@ -366,7 +366,7 @@ router.post(
                     '<p> - University : ' + oldUser.university.toUpperCase() + '</p>' +
                     '<p> - Email : ' + oldUser.email + '</p>' +
                     '<p> - Resume : ' + ' <a href="' + oldUser.resumeUrl + '">Click Here</a></p><br>' +
-                    '<p>If you accept ' + nameUser + ' as a mentee, please reach out to him/her at your convenience and include contact@mentor-pack.com in your email.</p>' +
+                    '<p>If you accept ' + nameUser + ' as a mentee, please reach out to him/her at your convenience and include contact@mentor-pack.com in your email (cf template attached).</p>' +
                     '<p>Otherwise, let us know by replying to this email.</p><br>' +
                     '<p>Please find attached a document explaining our program to help you on your journey as a mentor.</p><br>' +
                     '<p>Best regards,</p>' +
