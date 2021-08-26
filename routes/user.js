@@ -366,7 +366,7 @@ router.post(
                     '<p> - Email : ' + oldUser.email + '</p>' +
                     '<p> - Resume : ' + ' <a href="' + oldUser.resumeUrl + '">Click Here</a></p>' +
                     '<p>If you accept ' + nameUser + ' as a mentee, please reach out to him/her at your convenience and include contact@mentor-pack.com in your email (template attached).</p>' +
-                    '<p>Otherwise, let us know by replying to this email.</p><br>' +
+                    '<p>Otherwise, let us know by replying to this email.</p>' +
                     '<p>Please find attached a document explaining our program to help you on your journey as a mentor.</p>' +
                     "<p>Feel free to add 'Mentor at MentorPack' as an experience position on your LinkedIn profile.</p><br>" +
                     '<p>Best regards,</p>' +
