@@ -24,7 +24,7 @@ function verifyToken(req, res, next) {
 }
 
 
-const sign = '<img src="https://drive.google.com/uc?export=view&id=1y-Hjshgbjd5I5QivINnijZplQQMdNjxI" alt="" style="height: 70px; width: auto;">';
+const sign = '<div class="" style="background-color: #f0f2f5; padding: 10px 30px; font-family: sans-serif; display: flex; justify-content: space-between;"><div class="" style="display: flex; flex-direction: row; align-items: center; color: #0c3c44;"><img src="https://drive.google.com/uc?export=view&id=1y-Hjshgbjd5I5QivINnijZplQQMdNjxI" alt="" style="height: 60px; width: auto;"><h1>MentorPack</h1></div><div class="" style="display: flex; flex-direction: row; align-items: center; color: #0c3c44;"><a href="https://www.linkedin.com/company/mentorpack/"><svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" viewBox="0 0 24 24" style="opacity: 0.9; fill:#0c3c44;"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a></div></div>';
 
 /*-------------------------------------------
 formidable = require('formidable'),
@@ -365,10 +365,11 @@ router.post(
                     '<p> - Major : ' + oldUser.major.toLowerCase() + '</p>' +
                     '<p> - University : ' + oldUser.university.toUpperCase() + '</p>' +
                     '<p> - Email : ' + oldUser.email + '</p>' +
-                    '<p> - Resume : ' + ' <a href="' + oldUser.resumeUrl + '">Click Here</a></p><br>' +
-                    '<p>If you accept ' + nameUser + ' as a mentee, please reach out to him/her at your convenience and include contact@mentor-pack.com in your email (cf template attached).</p>' +
+                    '<p> - Resume : ' + ' <a href="' + oldUser.resumeUrl + '">Click Here</a></p>' +
+                    '<p>If you accept ' + nameUser + ' as a mentee, please reach out to him/her at your convenience and include contact@mentor-pack.com in your email (template attached).</p>' +
                     '<p>Otherwise, let us know by replying to this email.</p><br>' +
-                    '<p>Please find attached a document explaining our program to help you on your journey as a mentor.</p><br>' +
+                    '<p>Please find attached a document explaining our program to help you on your journey as a mentor.</p>' +
+                    "<p>Feel free to add 'Mentor at MentorPack' as an experience position on your LinkedIn profile.</p><br>" +
                     '<p>Best regards,</p>' +
                     '<p>MentorPack Team</p>' +
                     sign,
