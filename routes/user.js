@@ -376,6 +376,9 @@ router.post(
                     filename: 'MentorPack program.pdf',
                     path: './routes/MentorPack Role and Responsibility.pdf',
                     contentType: 'application/pdf'
+                }, {
+                    filename: 'Email template.docx',
+                    path: './routes/Email template.docx'
                 }],
             }).then(info => {
                 console.log({ info });
@@ -464,11 +467,6 @@ router.post("/emailMentees", verifyToken, (req, res) => {
 })
 
 */
-
-
-
-
-
 
 
 

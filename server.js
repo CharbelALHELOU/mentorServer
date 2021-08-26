@@ -97,6 +97,9 @@ function logEveryDay(i) {
     }, _MS_PER_DAY)
 }
 
+
+
+
 mongoose
     .connect(mongooseURI)
     .then(() => {
@@ -106,6 +109,5 @@ mongoose
         });
         console.log("\nConnected to".cyan, "ng-market".magenta, "database".cyan);
         logEveryDay(0);
-
     })
     .catch(err => console.log("Error connecting to database".cyan, err));
