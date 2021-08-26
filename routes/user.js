@@ -24,7 +24,7 @@ function verifyToken(req, res, next) {
 }
 
 
-const sign = '<div class="" style="background-color: #f0f2f5; padding-top: 5px;display : flex; justify-content: left;align-items: center;padding-bottom: 5px; font-family: sans-serif;"><img src="https://drive.google.com/uc?export=view&id=1y-Hjshgbjd5I5QivINnijZplQQMdNjxI" alt="" style="height: 42px; width: auto;"><div class="" style="color: #0c3c44;padding-left: 5px; "><h4 style="padding: 5px; padding-left: 0; margin: 0;">MentorPack</h4><small style="padding: 0; margin: 0;"><a href="https://www.linkedin.com/company/mentorpack/" style="color: inherit; text-decoration: underline; font-weight: 300;">LinkedIn</a></small></div></div>';
+const sign = '<div class="" style="background-color: #f0f2f5; padding-top: 5px;display : flex; justify-content: left;align-items: center;padding-bottom: 5px; font-family: sans-serif;"><img src="https://drive.google.com/uc?export=view&id=1y-Hjshgbjd5I5QivINnijZplQQMdNjxI" alt="" style="height: 35px; width: auto;"><div class="" style="color: #0c3c44;padding-left: 5px; "><h5 style="padding: 5px; padding-left: 0; margin: 0;">MentorPack</h5><small style="padding: 0; margin: 0;"><a href="https://www.linkedin.com/company/mentorpack/" style="color: inherit; text-decoration: underline; font-weight: 300;">LinkedIn</a></small></div></div>';
 /*-------------------------------------------
  formidable = require('formidable'),
    fs = require('fs'),
