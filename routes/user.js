@@ -26,7 +26,8 @@ function verifyToken(req, res, next) {
 
 const sign = '<div class="" style="background-color: #f0f2f5; padding-top: 5px; padding-bottom: 5px; font-family: sans-serif; width : 350px;">' +
     '<div class="">' +
-    '<img src="https://drive.google.com/uc?export=view&id=1y-Hjshgbjd5I5QivINnijZplQQMdNjxI" alt="" style="height: 50px; width: auto;">' + '<h3 style=" margin: 0;">MentorPack</h3><small style="padding: 0; margin: 0;"><a href="https://www.linkedin.com/company/mentorpack/" style="color: inherit; text-decoration: underline; font-weight: 300;">LinkedIn</a></small>' +
+    '<img src="https://drive.google.com/uc?export=view&id=1y-Hjshgbjd5I5QivINnijZplQQMdNjxI" alt="" style="height: 50px; width: auto;">' + '<h3 style=" margin: 0;">MentorPack' +
+    '<small style="padding: 0; margin: 0;"><a href="https://www.linkedin.com/company/mentorpack/" style="color: inherit; text-decoration: underline; font-weight: 300;">LinkedIn</a></small></h3>' +
     '</div>'
     /*-------------------------------------------
      formidable = require('formidable'),
