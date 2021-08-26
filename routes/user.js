@@ -24,7 +24,7 @@ function verifyToken(req, res, next) {
 }
 
 
-const sign = '<div class="" style="background-color: #f0f2f5; padding-top: 7px; padding-bottom: 7px; font-family: sans-serif; display: flex; align-items: center;">' +
+const sign = '<div class="" style=" padding-top: 7px; padding-bottom: 7px; font-family: sans-serif; display: flex; align-items: center;">' +
     '<div class="">' +
     '<img src="https://drive.google.com/uc?export=view&id=1y-Hjshgbjd5I5QivINnijZplQQMdNjxI" alt="" style="height: 60px; width: auto;">' +
     '</div>' +
