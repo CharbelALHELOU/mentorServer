@@ -24,20 +24,19 @@ function verifyToken(req, res, next) {
 }
 
 
-const sign = '<div class="" style="background-color: #f0f2f5; padding-top: 10px; width:100%;padding-bottom: 10px; font-family: sans-serif; display: flex;"><div class="" style="display: flex; flex-direction: row; align-items: center; color: #0c3c44; padding-right: 7px;"><img src="https://drive.google.com/uc?export=view&id=1y-Hjshgbjd5I5QivINnijZplQQMdNjxI" alt="" style="height: 60px; width: auto;"></div><div class="" style="color: #0c3c44;"><h3 style="padding: 5px; padding-left: 0; margin: 0;">MentorPack</h3><small style="padding: 0; margin: 0;"><a href="https://www.linkedin.com/company/mentorpack/" style="color: inherit; text-decoration: underline; font-weight: 300;">LinkedIn</a></small></div></div>';
-
+const sign = '<div class="" style="background-color: #f0f2f5; padding-top: 5px; padding-bottom: 5px; font-family: sans-serif; display: flex;"><img src="https://drive.google.com/uc?export=view&id=1y-Hjshgbjd5I5QivINnijZplQQMdNjxI" alt="" style="height: 60px; width: auto;"><div class="" style="color: #0c3c44;padding-left: 5px;"><h3 style="padding: 5px; padding-left: 0; margin: 0;">MentorPack</h3><small style="padding: 0; margin: 0;"><a href="https://www.linkedin.com/company/mentorpack/" style="color: inherit; text-decoration: underline; font-weight: 300;">LinkedIn</a></small></div></div>';
 /*-------------------------------------------
-formidable = require('formidable'),
-  fs = require('fs'),
-  path = require('path');
-const readline = require('readline');
-const { gmail } = require("googleapis/build/src/apis/gmail");
-// If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/drive'];///-----'https://www.googleapis.com/auth/drive',
-// The file token.json stores the user's access and refresh tokens, and is
-// created automatically when the authorization flow completes for the first
-// time.
-const TOKEN_PATH = 'token.json';*/
+ formidable = require('formidable'),
+   fs = require('fs'),
+   path = require('path');
+ const readline = require('readline');
+ const { gmail } = require("googleapis/build/src/apis/gmail");
+ // If modifying these scopes, delete token.json.
+ const SCOPES = ['https://www.googleapis.com/auth/drive'];///-----'https://www.googleapis.com/auth/drive',
+ // The file token.json stores the user's access and refresh tokens, and is
+ // created automatically when the authorization flow completes for the first
+ // time.
+ const TOKEN_PATH = 'token.json';*/
 /*-------------------------------------------*/
 
 // Multer configuration
