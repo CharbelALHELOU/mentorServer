@@ -86,8 +86,8 @@ const transporter = nodemailer.createTransport(smtpTransport({
     service: 'gmail',
     host: 'smtp.gmail.com',
     auth: {
-        user: 'contact@mentor-pack.com',
-        pass: 'wtyjmnufglpufcxu',
+        user: 'mentorpack.contact@gmail.com',
+        pass: 'uwgccdjmdhynftxn',
     },
 }));
 

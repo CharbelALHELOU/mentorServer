@@ -39,7 +39,7 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+const _MS_PER_DAY = 1000;
 
 // a and b are javascript Date objects
 function NumberOfDays(a) {
@@ -55,21 +55,13 @@ function logEveryDay(i) {
         User.find({ resumeUrl: "none" }).then(async(usersPending) => {
             for (let j = 0; j < usersPending.length; j++) {
                 let days = Math.trunc(NumberOfDays(usersPending[j].createdAt));
-                let send = false;
-                if (usersPending[j].relance < 2) {
-                    if (days < 7) {
-                        console.log("don't send");
-                    }
-                    if (days => 7 && days < 14) {
-                        if (usersPending[j].relance < 1) {
-                            send = true;
-                        } else {
-                            console.log("don't send");
-                        }
-                    }
-                    if (days > 14) {
-                        send = true;
-                    }
+                var send = false;
+
+                if (days > 7 && usersPending[j].relance == 0) {
+                    send = true;
+                }
+                if (days > 14 && usersPending[j].relance == 1) {
+                    send = true;
                 }
 
                 if (send) {
@@ -92,7 +84,7 @@ function logEveryDay(i) {
                 }
             }
             console.log("DAY - " + i);
-            logEveryDay(++i);
+            logEveryDay(i++);
         })
     }, _MS_PER_DAY)
 }
