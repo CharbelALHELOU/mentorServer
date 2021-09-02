@@ -100,6 +100,6 @@ mongoose
             console.log("Server running on port".cyan, colors.yellow(port));
         });
         console.log("\nConnected to".cyan, "ng-market".magenta, "database".cyan);
-        logEveryDay(0);
+
     })
     .catch(err => console.log("Error connecting to database".cyan, err));
