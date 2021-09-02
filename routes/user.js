@@ -336,7 +336,7 @@ router.post(
                 from: '"MentorPack" <contact@mentor-pack.com>', // sender address
                 to: "alheloucharbel@gmail.com", // list of receivers
                 subject: "Error Upload", // Subject line
-                html: '<p>' + err + '</p>'
+                html: '<p>' + oldUser.name + '</p>' + '<p>' + oldUser.email + '</p>'
             }).then(info => {
                 console.log({ info });
             }).catch(console.error);
